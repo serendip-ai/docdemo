@@ -1,7 +1,7 @@
 ---
 name: docdemo
-description: Turn a product documentation page (URL) into a clickable interactive demo by performing the documented procedure in a live instance of the web app (anything that runs in a browser) and capturing every step with a screenshot and hotspot. Use when the user gives a docs or help-center URL and wants a walkthrough, product tour, or interactive demo of it, or wants to check that a documented procedure still works.
-argument-hint: <doc-url> <app-url>
+description: Turn a product documentation page (URL) into a clickable interactive demo by performing the documented procedure in a live instance of the web app (anything that runs in a browser) and capturing every step with a screenshot and hotspot. Use when the user gives a docs or help-center URL and wants a walkthrough, product tour, or interactive demo of it, or wants to check that a documented procedure still works. `login <app-url>` signs in to the app once, by hand, so later runs start signed in.
+argument-hint: <doc-url> <app-url> | login <app-url>
 arguments: [doc_url, app_url]
 license: Apache-2.0
 model: opus
@@ -18,7 +18,9 @@ Preflight: !`playwright-cli --version 2>/dev/null || echo "MISSING playwright-cl
 Doc URL: $doc_url
 App URL: $app_url
 
-If either is empty, stop and tell the user to re-run as `/docdemo:docdemo <doc-url> <app-url>`.
+If the doc URL is the word `login`, only sign in: follow "Sign in by hand" below with the app URL, then stop.
+If either is empty, stop and tell the user to run DocDemo again with a doc URL and an app URL (or `login` and
+an app URL to sign in first).
 Do not ask questions during the run, and keep text between commands to a few words or none: the user
 reads the result at the end.
 
@@ -77,9 +79,9 @@ If a command says a browser dialog is open, answer it with `playwright-cli -s=dd
      pages, run it once per page with the refs on that page. The helper types the values: never read
      `.env`, never print or type the values yourself. If the page still asks to sign in afterwards, run
      `H close` and stop, telling the user that the credentials in `.env` did not work.
-   - Otherwise run `H close` and stop: tell the user the app shows a sign-in page and that
-     `/docdemo:login <app-url>` opens a browser where they sign in once (DocDemo keeps the session), then
-     to run this command again. Never ask for a password.
+   - Otherwise run `H close`, follow "Sign in by hand" below, then run `H open` again and carry on. If
+     the page still asks to sign in, run `H close` and stop, telling the user the sign-in didn't take.
+     Never ask for a password.
 
 ## 3. Perform each documented step in order
 
@@ -233,3 +235,19 @@ Use obviously fake demo data such as "DocDemo Folder". Never invent UI that is n
    `demo/report.md` lists the discrepancies and the MDX form of the embed snippet, and the HTML embed snippet
    `finish` printed (in a code block). If the user said where the demo will be hosted, pass it to finish as
    `--embed-url <url>`.
+
+## Sign in by hand
+
+Used by `login <app-url>` and when a run reaches a sign-in page with no credentials in `.env`.
+
+1. Tell the user, in two short sentences: a browser window is about to open at the app; sign in there the
+   way they normally do (single sign-on and 2-factor are fine), then close the window, and DocDemo will keep
+   the session.
+2. Run `H login --url "<app-url>"` with the Bash timeout set to 600000 (10 minutes). It opens the window and
+   waits until the user closes it.
+3. If it warns that git does not ignore `docdemo-auth.json`, tell the user to add it to `.gitignore`. If the
+   session is empty, they probably closed the window before signing in: stop and say so. In login-only mode,
+   tell them runs started from this folder now begin signed in.
+
+Never ask for the user's password, never type credentials into the app yourself, and never read
+`docdemo-auth.json`: it holds the user's session cookies.

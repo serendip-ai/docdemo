@@ -1,6 +1,6 @@
 {
   "name": "docdemo",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Docs that click: turn a how-to page into a clickable demo of your product.",
   "type": "module",
   "bin": {

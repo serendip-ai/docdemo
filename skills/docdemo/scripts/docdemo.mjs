@@ -10,7 +10,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const VERSION = '1.4.0';
+const VERSION = '1.5.0';
 const SESSION = process.env.DOCDEMO_SESSION || 'dd'; // the skill always uses dd; override for parallel tooling
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ASSETS = path.join(HERE, '..', 'assets');
@@ -2085,8 +2085,8 @@ function openCommand(opts) {
       if (Object.values(from).includes('.env')) warnIfNotIgnored(path.resolve('.env'));
     } else {
       signIn = true;
-      console.log(`Unless the documented procedure is about signing in, run "close", stop, and tell the user to run ` +
-        `/docdemo:login ${demo.app.url}${state ? ' again' : ''}, then run DocDemo again.`);
+      console.log(`Unless the documented procedure is about signing in, run "close", then have the user sign in by hand: ` +
+        `run "login --url ${demo.app.url}" (see SKILL.md), then "open" again.`);
     }
   }
   if (!signIn) printPage(at);
@@ -2250,13 +2250,20 @@ function loginCommand(opts) {
     const readCode = path.join(dir, 'read.js'), latest = path.join(dir, 'latest.json');
     fs.writeFileSync(readCode, `async page => {
   const context = page.context();
+  // On macOS the browser keeps running after its last window closes, and run-code then hands us a new
+  // blank page: a context with nothing but blank pages means the person closed the window.
+  if (!context.pages().some(p => p.url() !== 'about:blank')) return JSON.stringify({ closed: true });
   const origins = await Promise.all(context.pages().map(p => p.evaluate(() => ({ origin: location.origin,
     localStorage: Object.entries(localStorage).map(([name, value]) => ({ name, value })) })).catch(() => null)));
   return JSON.stringify({ cookies: await context.cookies(), origins: origins.filter(o => o && o.origin !== 'null') });
 }`);
     const read = () => {
       const r = lpw(['--raw', 'run-code', `--filename=${readCode}`], { allowFail: true });
-      try { const st = JSON.parse(JSON.parse(r.stdout.trim())); return r.status === 0 && Array.isArray(st.cookies) ? st : null; }
+      try {
+        const st = JSON.parse(JSON.parse(r.stdout.trim()));
+        if (st.closed) { lpw(['close'], { allowFail: true }); return null; } // also closes the blank page it was handed
+        return r.status === 0 && Array.isArray(st.cookies) ? st : null;
+      }
       catch { return null; }
     };
     const storage = new Map(); // origin -> its localStorage, the latest read wins
@@ -2435,13 +2442,13 @@ function signinCommand(opts) {
   }
   if (res.error === 'WRONG_ORIGIN')
     fail('USAGE', `the sign-in form is not on the app's origin (${origin}${res.at ? `; it is on ${hide(res.at)}` : ''}). Nothing was typed. ` +
-      `Credentials from .env are only typed on the app's own origin: tell the user to sign in once with /docdemo:login instead.`);
+      `Credentials from .env are only typed on the app's own origin: have the user sign in by hand instead, with "login --url <app-url>".`);
   if (res.error === 'NOT_PASSWORD_FIELD')
     fail('USAGE', '--password-ref must point at a password field (an input whose text shows as dots). Nothing was typed.');
   if (res.error === 'NOT_CLEARED') {
     pw(['close'], { allowFail: true });
     fail('ACTION_FAILED', 'signin could not clear the password from the page, so the browser was closed. Run "open" again; ' +
-      'if this repeats, tell the user to sign in once with /docdemo:login instead.');
+      'if this repeats, have the user sign in by hand instead, with "login --url <app-url>".');
   }
   if (res.error === 'FAILED')
     fail('ACTION_FAILED', `signin failed: ${hide(res.message)}\nThe password was cleared from the page. Take a new snapshot and check the refs.`);

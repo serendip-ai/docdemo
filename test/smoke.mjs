@@ -1286,7 +1286,7 @@ Ping is the first button.
   check('init (app behind a sign-in page)', H('init', '--title', 'Add a note', '--doc-url', 'https://example.com/docs/notes',
     '--app-url', `${APP}login`, '--steps', 'demo/steps.json', '--out', 'signin'));
   const opened = check('open shows the sign-in page', H('open', '--out', 'signin'));
-  expect('open reports SIGN-IN and points to /docdemo:login', /SIGN-IN:[^\n]*no saved session/.test(opened.stdout) && opened.stdout.includes(`/docdemo:login ${APP}login`));
+  expect('open reports SIGN-IN and points to login', /SIGN-IN:[^\n]*no saved session/.test(opened.stdout) && opened.stdout.includes(`login --url ${APP}login`));
 
   // a password field in a settings form, in an app with navigation, is not a sign-in page
   fs.mkdirSync(path.join(work, 'settings'));
@@ -1306,7 +1306,7 @@ Ping is the first button.
   // signin: credentials from ./.env are typed by the helper and never printed or written anywhere else
   fs.writeFileSync(path.join(work, '.env'), 'OTHER=1\nDOCDEMO_USERNAME=demo@example.com\nDOCDEMO_PASSWORD="s3cret-Pa55"  # test account\n');
   const withCreds = check('open with credentials in .env', H('open', '--out', 'signin'));
-  expect('open offers signin instead of /docdemo:login', /CREDENTIALS: DOCDEMO_USERNAME \(\.env\), DOCDEMO_PASSWORD \(\.env\)/.test(withCreds.stdout) && !withCreds.stdout.includes('/docdemo:login'));
+  expect('open offers signin instead of login', /CREDENTIALS: DOCDEMO_USERNAME \(\.env\), DOCDEMO_PASSWORD \(\.env\)/.test(withCreds.stdout) && !withCreds.stdout.includes('login --url'));
   snap = snapshot();
   const signin = check('signin', H('signin', '--username-ref', ref(snap, 'textbox "Email"'), '--password-ref', ref(snap, 'textbox "Password"'), '--submit-ref', ref(snap, 'button "Sign in"')));
   expect('signin signed in', /Signed in/.test(run('playwright-cli', [`-s=${SESSION}`, 'eval', '() => document.title']).stdout) && !/password field is still visible/.test(signin.stdout));
@@ -1392,6 +1392,26 @@ Ping is the first button.
   expect('login waits without state-save (no hidden pages, no blinking)', helperCmds.includes('run-code') && !helperCmds.includes('state-save'));
   expect('the session file is owner-only', (fs.statSync(path.join(work, 'auth.json')).mode & 0o077) === 0);
   expect('login leaves no session copies in the temp folder', fs.readdirSync(os.tmpdir()).filter(f => f.startsWith('docdemo-login-')).length === tmpBefore);
+
+  // macOS: closing the window closes the page but the browser keeps running, and run-code then hands
+  // the helper a fresh blank page. That must count as closed, not keep a blank window coming back.
+  const closePage = path.join(work, 'close-page.js');
+  fs.writeFileSync(closePage, 'async page => { for (const p of page.context().pages()) await p.close(); return "closed"; }');
+  const waiting2 = spawn('node', [HELPER, 'login', '--url', `${APP}login`, '--state', 'auth2.json', '--wait', '60'], { cwd: work, env });
+  let loginOut2 = '';
+  waiting2.stdout.on('data', d => { loginOut2 += d; });
+  const loginExit2 = new Promise(res => waiting2.on('exit', res));
+  for (let i = 0; i < 120 && !loginOut2.includes('Waiting for it to be closed'); i++) await new Promise(res => setTimeout(res, 250));
+  run('playwright-cli', [...loginSession, 'eval', "() => (document.cookie = 'sid=def456; path=/')"]);
+  await new Promise(res => setTimeout(res, 2500));
+  const t2 = Date.now();
+  run('playwright-cli', [...loginSession, '--raw', 'run-code', `--filename=${closePage}`]); // the user closes the window only
+  const code2 = await Promise.race([loginExit2, new Promise(res => setTimeout(() => res('timeout'), 20000))]);
+  if (code2 === 'timeout') waiting2.kill();
+  expect('login exits when only the window closes (browser still running)', code2 === 0 && Date.now() - t2 < 15000);
+  const auth2 = fs.existsSync(path.join(work, 'auth2.json')) ? JSON.parse(fs.readFileSync(path.join(work, 'auth2.json'), 'utf8')) : { cookies: [] };
+  expect('that session is saved too', auth2.cookies.some(c => c.name === 'sid' && c.value === 'def456'));
+  expect('and the login browser is shut down', !/-login:\s*\n\s*- status: open/.test(run('playwright-cli', ['list']).stdout));
 
   // doc must not clear a folder DocDemo did not create
   fs.mkdirSync(path.join(work, 'mine'));
