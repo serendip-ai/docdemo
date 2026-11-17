@@ -1,0 +1,82 @@
+[
+  {
+    "id": "mattermost-create-channel",
+    "title": "Create a public or private channel",
+    "docUrl": "https://docs.mattermost.com/end-user-guide/collaborate/create-channels#create-a-public-or-private-channel",
+    "appUrl": "http://localhost:8065",
+    "difficulty": "easy",
+    "notes": "Web/Desktop and Mobile tabs share one page with duplicate headings; the fragment resolves to the first (Web/Desktop) 'Create a public or private channel' heading and the helper prints only that section. Steps 4 and 5 are '(Optional)'. The sidebar button is labelled 'Add Channels' and the '+' next to the team name is 'Browse or create channels'; the doc's alternative ('select at the top of the channel sidebar') lost its icon in the HTML-to-text conversion. Verified in 11.11.1: menu items read 'Browse channels' / 'Create new channel' (lowercase 'new channel'); the 'Create a new channel' modal has 'Channel name', Public/Private buttons, a 'Choose a default category (optional)' combobox (doc: 'Default category (optional)') and a 'Channel Purpose' textbox; 'Create channel' is disabled until a name is entered and is an undocumented final click."
+  },
+  {
+    "id": "mattermost-pin-message",
+    "title": "Pin messages",
+    "docUrl": "https://docs.mattermost.com/end-user-guide/collaborate/save-pin-messages#pin-messages",
+    "appUrl": "http://localhost:8065/docdemo/channels/town-square",
+    "difficulty": "easy",
+    "notes": "Town Square has two seeded messages from admin ('Welcome to the DocDemo Team workspace.' and 'Reminder: the release checklist lives in Project Alpha.'). The procedure is the first two numbered steps; the same section also holds the unpin steps and the mobile steps, which are not part of it. The message's 'more' button appears only on hover. The menu item is 'Pin to Channel' (doc: 'Pin to channel'), a casing difference only."
+  },
+  {
+    "id": "mattermost-custom-status",
+    "title": "Set a custom status",
+    "docUrl": "https://docs.mattermost.com/end-user-guide/preferences/set-your-status-availability#set-a-custom-status",
+    "appUrl": "http://localhost:8065",
+    "difficulty": "medium",
+    "notes": "The first four numbered steps are Web/Desktop; the next four (ending 'Tap **Done**') are Mobile and must not be used. The profile picture is the 'User's account menu' button in the top-right banner. Verified by hand-driving: the menu item reads 'Set custom status' (doc: 'Set a custom status', expected note); the modal is titled 'Set a status'; 'Clear after: Today' is a button without an accessible name that opens a custom menu (Don't clear, 30 minutes, 1 hour, 4 hours, Today, This week, Choose date and time). No seeding needed."
+  },
+  {
+    "id": "mattermost-channel-purpose",
+    "title": "Change a channel's purpose",
+    "docUrl": "https://docs.mattermost.com/end-user-guide/collaborate/channel-header-purpose#channel-purpose",
+    "appUrl": "http://localhost:8065/docdemo/channels/project-alpha",
+    "difficulty": "easy",
+    "notes": "Starts in the seeded channel Project Alpha (purpose 'Planning for the Alpha launch'). First three numbered steps are Web/Desktop; the five that follow are Mobile. The channel name button is 'project alpha channel menu'. In 11.11 'Channel Settings' opens a modal with 'Info' and 'Archive Channel' tabs; the purpose textbox ('Enter a purpose for this channel (optional)') is on Info, and Reset/Save buttons appear only after a change ('You have unsaved changes')."
+  },
+  {
+    "id": "mattermost-browse-channels",
+    "title": "Browse and join channels",
+    "docUrl": "https://docs.mattermost.com/end-user-guide/collaborate/browse-channels",
+    "appUrl": "http://localhost:8065",
+    "difficulty": "medium",
+    "notes": "No fragment: the first numbered list on the page (4 steps, Web/Desktop) is the procedure; the second list is Mobile. Seeded public channel 'Design Reviews' exists and admin is not a member, so it appears in Browse Channels. The doc's 'Plus icon at the top of the channel sidebar' is the 'Browse or create channels' button next to the team name (the sidebar also has an 'Add Channels' button with the same menu). Verified in 11.11.1: the menu item is 'Browse channels'; in the 'Browse Channels' modal the 'Join' button on the Design Reviews row appears only on hover (hover the row first)."
+  },
+  {
+    "id": "mattermost-forward-message",
+    "title": "Forward messages",
+    "docUrl": "https://docs.mattermost.com/end-user-guide/collaborate/forward-messages",
+    "appUrl": "http://localhost:8065/docdemo/channels/town-square",
+    "difficulty": "easy",
+    "notes": "Two numbered steps; step 2 ('Specify where you want to forward the message') needs a destination, e.g. Off-Topic or Project Alpha. Forward a seeded Town Square message. The message's 'more' button appears only on hover (hover the message first); the menu item is 'Forward'. The Forward message modal's destination picker is a combobox with no accessible name (type a channel name, then click the option), and the modal needs an undocumented click on its 'Forward' button."
+  },
+  {
+    "id": "mattermost-restore-edited-message",
+    "title": "Restore a previous version of an edited message",
+    "docUrl": "https://docs.mattermost.com/end-user-guide/collaborate/send-messages#restore-a-previous-version-of-an-edited-message",
+    "appUrl": "http://localhost:8065/docdemo/channels/project-alpha",
+    "difficulty": "hard",
+    "notes": "Seeded: in Project Alpha, admin's post 'Launch date is March 3.' was edited to 'Launch date is March 10.', so the post shows an 'Edited' button. Clicking it opens the 'Edit History' right pane listing the March 3 version with a 'Select to restore an old message.' button (verified available in this Team Edition image even though the section intro mentions Enterprise/Professional). Step 2 ('review all previous versions') is arguably informational. Step 4 is a confirm dialog."
+  },
+  {
+    "id": "mattermost-rename-category",
+    "title": "Rename a sidebar category",
+    "docUrl": "https://docs.mattermost.com/end-user-guide/preferences/customize-your-channel-sidebar#rename-categories",
+    "appUrl": "http://localhost:8065",
+    "difficulty": "medium",
+    "notes": "Seeded custom sidebar category 'Launch Work' (contains Project Alpha) for admin. The 'Launch Work category options' button appears only while hovering the category header, so a hover action is expected first. Built-in categories (Channels, Direct Messages) cannot be renamed, so the agent must pick 'Launch Work'."
+  },
+  {
+    "id": "mattermost-console-rename-user",
+    "title": "Update a user's username in the System Console",
+    "docUrl": "https://docs.mattermost.com/administration-guide/configure/user-management-configuration-settings#update-users-username",
+    "appUrl": "http://localhost:8065",
+    "difficulty": "medium",
+    "notes": "Seeded second user Jordan Lee (jordan.lee). Step 1 needs undocumented navigation: 'Product switch menu' (top-left grid) > System Console > User Management > Users. Selecting the user's name opens 'User Configuration' with an editable Username field (verified present in 11.11); Save is in the sticky footer and enables after a change. Do not rename 'admin' (auth.sh logs in as admin)."
+  },
+  {
+    "id": "mattermost-console-restrict-delete",
+    "title": "Restrict who can delete messages (System Scheme)",
+    "docUrl": "https://docs.mattermost.com/administration-guide/onboard/advanced-permissions#restrict-who-can-delete-messages",
+    "appUrl": "http://localhost:8065",
+    "difficulty": "hard",
+    "notes": "Team Edition shows System Console > User Management > Permissions with a 'System Scheme' card and an 'Edit Scheme' button. On the scheme page the permission checkboxes are plain divs (no checkbox role, no checked state in the snapshot), so a screenshot is needed to see state and clicks go on the 'Delete Own Posts' / 'Delete Others' Posts' text. In the Channel Administrators panel 'Delete Own Posts' shows 'Inherited from All Members.' and cannot be changed independently. The doc is self-contradictory (step 3 unchecks Channel Administrators' Delete Posts, step 4 checks them) and lists no Save step although the page's Save button is required; notes/undocumented Save are expected."
+  }
+]

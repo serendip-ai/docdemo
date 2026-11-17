@@ -1,0 +1,82 @@
+[
+  {
+    "id": "metabase-create-dashboard",
+    "title": "How to create a dashboard",
+    "docUrl": "https://www.metabase.com/docs/v0.63/dashboards/introduction#how-to-create-a-dashboard",
+    "appUrl": "http://localhost:3001/",
+    "difficulty": "easy",
+    "notes": "Doc fetch: html. Steps 1-4 are actions; step 5 is a reference (points to adding questions). The + New menu offers Question / SQL query / Dashboard. Expected: new dashboard created and opened in edit mode. The collection picker defaults to Our analytics; any collection is fine (DocDemo Collection exists)."
+  },
+  {
+    "id": "metabase-move-collection",
+    "title": "Moving collections",
+    "docUrl": "https://www.metabase.com/docs/v0.63/exploration-and-organization/collections#moving-collections",
+    "appUrl": "http://localhost:3001/",
+    "difficulty": "easy",
+    "notes": "Doc fetch: html. Move the seeded top-level 'DocDemo Collection' (/collection/5) into another collection, e.g. 'Examples' or the admin's personal collection. The page's three-dot menu is an unlabeled ellipsis button next to Bookmark / More info. The doc names the root 'Our Analytics'; the UI says 'Our analytics'. Verified: the ellipsis menu has Move / Edit permissions / Move questions into their dashboards / Move to trash; the Move dialog lists Our analytics, the personal collection and Examples, with a 'Move' button."
+  },
+  {
+    "id": "metabase-trash-question",
+    "title": "Move a question to the trash",
+    "docUrl": "https://www.metabase.com/docs/v0.63/exploration-and-organization/delete-and-restore#deleting-and-restoring-items",
+    "appUrl": "http://localhost:3001/",
+    "difficulty": "easy",
+    "notes": "Doc fetch: html. The section contains three numbered lists (trash one item, bulk trash, restore); the intended procedure is the FIRST list (3 steps). Target: the seeded question 'DocDemo Orders' (/question/40, in DocDemo Collection). The question's three-dot button is labeled 'Move, trash, and more…'; menu item 'Move to trash'. A confirmation dialog may appear. Verified: 'Move to trash' opens a confirmation dialog 'Move this question to trash?' with a 'Move to trash' button."
+  },
+  {
+    "id": "metabase-model-from-question",
+    "title": "Create a model from a saved question",
+    "docUrl": "https://www.metabase.com/docs/v0.63/data-modeling/models#create-a-model-from-a-saved-question",
+    "appUrl": "http://localhost:3001/",
+    "difficulty": "medium",
+    "notes": "Doc fetch: html. Step 1 allows selecting an existing saved question: use 'DocDemo Orders' (/question/40). Step 2 (save) is then already done, so a note is expected. Known wording difference: doc says '… > Turn this into a model'; the v0.63 menu item is 'Turn into a model' (under 'Move, trash, and more…'). A confirmation dialog follows. Note for labelers: the menu item is 'Turn into a model', but the confirmation dialog's button IS labeled 'Turn this into a model', so the doc wording is only loosely off."
+  },
+  {
+    "id": "metabase-freeze-columns",
+    "title": "Freeze columns or rows",
+    "docUrl": "https://www.metabase.com/docs/v0.63/questions/visualizations/table#freeze-columns-or-rows",
+    "appUrl": "http://localhost:3001/question/40",
+    "difficulty": "medium",
+    "notes": "Doc fetch: html. Starts on the seeded table question 'DocDemo Orders'. Gear icon (bottom left, unnamed button with 'gear icon' img) opens settings with tabs Columns / Display / Conditional Formatting; Display has switches 'Freeze columns' and 'Freeze rows'. Step 4 (enter a number) appears after a switch is toggled. Mantine switch quirk: `act click`/`check` on the switch 'Freeze columns' ref fails with ACTION_FAILED because the real input is visually hidden; clicking its unnamed aria-hidden sibling (the switch track, next to the switch in the snapshot) toggles it and reveals the textbox 'Number of columns to freeze'. Verifier hand-drove this case end to end: 'complete: 4 actions across 4 of 4 documented steps, 5 frames'."
+  },
+  {
+    "id": "metabase-default-filter-value",
+    "title": "Set a default filter value",
+    "docUrl": "https://www.metabase.com/docs/v0.63/dashboards/filters#set-a-default-filter-value",
+    "appUrl": "http://localhost:3001/dashboard/2",
+    "difficulty": "medium",
+    "notes": "Doc fetch: html. Starts on the seeded 'DocDemo Sales Dashboard' with Category and Vendor filters wired to both cards. Verified by hand end to end: Edit dashboard > click the Category filter pill > Default value ('No default' button) > check a value > 'Add filter'. Step 2 wording says 'make required' although the procedure sets a default (doc copy-paste slip, not a UI mismatch). The doc bolds 'Edit the dashboard' while the button is 'Edit dashboard': a real (wording) doc error."
+  },
+  {
+    "id": "metabase-link-card",
+    "title": "Add a link card to a dashboard",
+    "docUrl": "https://www.metabase.com/docs/v0.63/dashboards/introduction#link-cards",
+    "appUrl": "http://localhost:3001/dashboard/2",
+    "difficulty": "medium",
+    "notes": "Doc fetch: html. In edit mode the toolbar button is 'Add a link or iframe' (link icon with a chevron that opens a small menu: link vs iframe), not a paper clip. Link to an item such as 'DocDemo Orders' or paste an external URL like https://example.com. Text after the list (variables in URLs) is not part of the procedure. Clicking 'Add a link or iframe' opens a menu with 'Link' and 'Iframe' (undocumented extra click); 'Link' adds a card whose input is a textbox named 'https://example.com' (placeholder). Leaving the dashboard with unsaved edits raises a beforeunload dialog."
+  },
+  {
+    "id": "metabase-create-snippet",
+    "title": "Create a SQL snippet",
+    "docUrl": "https://www.metabase.com/docs/v0.63/questions/native-editor/snippets#create-a-snippet",
+    "appUrl": "http://localhost:3001/",
+    "difficulty": "hard",
+    "notes": "Doc fetch: html. The section has two procedures. The first needs highlighting code and a right-click ('Save as snippet'), which DocDemo's act cannot do; the second ('You can also create a new snippet from the Snippet sidebar', 4 steps) is doable. In v0.63 the editor control is 'SQL Snippets' (snippet icon), not a 'Snippets' button, and it is an icon without a button role. The native editor is a code editor (fill may need a click then typing). Snippets are available in the open-source edition; snippet folders are not. Verified sidebar route: 'SQL Snippets' (generic element, cursor pointer, next to 'Learn about your data') opens the sidebar with a 'Create snippet' button, which opens the modal 'Create your new snippet' (textboxes 'Enter some SQL here so you can reuse it later', 'Give your snippet a name', 'Add a description'; Save enables after SQL + name). Doc steps 3-4 map to that modal; the extra 'Create snippet' click is undocumented."
+  },
+  {
+    "id": "metabase-revert-version",
+    "title": "Reverting to previous versions",
+    "docUrl": "https://www.metabase.com/docs/v0.63/exploration-and-organization/history#reverting-to-previous-versions",
+    "appUrl": "http://localhost:3001/",
+    "difficulty": "hard",
+    "notes": "Doc fetch: html. The page has two headings with this name (questions/dashboards and transforms); the helper prints the first, which is the right one. Use 'DocDemo Orders' (/question/40), seeded with three revisions (create + two description edits). Likely mismatch: the info icon ('More info') opens a sidebar on the Overview tab; versions are under a separate History tab, while step 3 says the sidebar shows versions directly. The revert control is a small icon button next to each version. Verified: History tab lists three entries; the two older ones have buttons named 'revert to You added a description.' / 'revert to You created this.' (revert icon, not a 'back arrow')."
+  },
+  {
+    "id": "metabase-linked-filters",
+    "title": "Set up linked filters",
+    "docUrl": "https://www.metabase.com/docs/v0.63/dashboards/linked-filters#set-up-linked-filters",
+    "appUrl": "http://localhost:3001/dashboard/2",
+    "difficulty": "hard",
+    "notes": "Doc fetch: html. Seeded dashboard has Category and Vendor text filters, both mapped to Product -> Category / Product -> Vendor on both cards. Natural setup: Vendor (child) linked to Category (parent). Likely mismatch: in v0.63 edit mode the filter pill shows no gear icon; clicking the pill itself opens the sidebar with tabs 'Filter settings' and 'Linked filters'. Step 4 is a toggle per parent filter. Changes are not persisted unless the dashboard is saved (not part of the doc steps). In the Linked filters tab the per-parent toggle is an UNNAMED switch next to a 'Category' button; like all Mantine switches here, click the aria-hidden track sibling, not the hidden input (act click on the input fails). Verified on a fresh instance: toggle flips to checked."
+  }
+]

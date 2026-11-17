@@ -1,0 +1,5 @@
+[
+  { "index": 1, "text": "In the Manage administrative menu, navigate to Configuration > Regional and language > Regional settings (admin/config/regional/settings).", "kind": "action" },
+  { "index": 2, "text": "Fill in the form as follows:", "kind": "action" },
+  { "index": 3, "text": "After editing the fields, click Save configuration to see the changes applied to the site.", "kind": "action" }
+]

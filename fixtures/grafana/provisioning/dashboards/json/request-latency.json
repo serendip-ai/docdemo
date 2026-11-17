@@ -1,0 +1,17 @@
+{
+  "uid": "docdemo-request-latency",
+  "title": "Request latency",
+  "tags": ["docdemo"],
+  "schemaVersion": 41,
+  "time": { "from": "now-6h", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Request latency",
+      "gridPos": { "x": 0, "y": 0, "w": 24, "h": 10 },
+      "datasource": { "type": "grafana-testdata-datasource", "uid": "docdemo-testdata" },
+      "targets": [{ "refId": "A", "scenarioId": "random_walk" }]
+    }
+  ]
+}

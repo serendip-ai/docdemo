@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1440" height="900" fill="#f7f8fa"/>
+  <rect width="1440" height="48" fill="#ffffff"/><line x1="0" y1="48" x2="1440" y2="48" stroke="#dde1e7"/>
+  <circle cx="28" cy="24" r="11" fill="#f46800"/><text x="50" y="30" font-size="16" font-weight="700" fill="#222">SampleApp</text>
+  <rect x="520" y="10" width="400" height="28" rx="6" fill="#f1f3f6" stroke="#dde1e7"/><text x="534" y="29" font-size="13" fill="#8a919e">Search…</text>
+  <rect x="0" y="49" width="220" height="851" fill="#ffffff"/><line x1="220" y1="49" x2="220" y2="900" stroke="#dde1e7"/>
+  
+      <text x="28" y="80" font-size="16" fill="#3b4252" font-weight="400">Home</text><rect x="8" y="98" width="204" height="38" rx="6" fill="#e6ecf7"/>
+      <text x="28" y="124" font-size="16" fill="#1f4fb8" font-weight="700">Dashboards</text>
+      <text x="28" y="168" font-size="16" fill="#3b4252" font-weight="400">Explore</text>
+      <text x="28" y="212" font-size="16" fill="#3b4252" font-weight="400">Alerting</text>
+      <text x="28" y="256" font-size="16" fill="#3b4252" font-weight="400">Connections</text>
+      <text x="28" y="300" font-size="16" fill="#3b4252" font-weight="400">Administration</text>
+  <text x="260" y="104" font-size="26" font-weight="700" fill="#1b1e24">Dashboards</text>
+  <text x="260" y="130" font-size="14" fill="#616875">Create and manage dashboards to visualize your data</text>
+  <rect x="260" y="170" width="1140" height="44" rx="4" fill="#fff" stroke="#e2e5ea"/>
+     <text x="282" y="198" font-size="15" fill="#222">📁 General</text><rect x="260" y="222" width="1140" height="44" rx="4" fill="#fff" stroke="#e2e5ea"/>
+     <text x="282" y="250" font-size="15" fill="#222">📁 Team Alpha</text><rect x="260" y="274" width="1140" height="44" rx="4" fill="#fff" stroke="#e2e5ea"/>
+     <text x="282" y="302" font-size="15" fill="#222">📁 Infrastructure</text><rect x="260" y="326" width="1140" height="44" rx="4" fill="#fff" stroke="#e2e5ea"/>
+     <text x="282" y="354" font-size="15" fill="#222">📁 Payments</text><rect width="1440" height="900" fill="#000" opacity="0.35"/>
+  <rect x="480" y="300" width="480" height="260" rx="8" fill="#fff"/>
+  <text x="510" y="345" font-size="20" font-weight="700" fill="#222">New folder</text>
+  <text x="520" y="398" font-size="14" font-weight="600" fill="#3b4252">Name</text>
+  <rect x="520" y="410" width="400" height="40" rx="4" fill="#fff" stroke="#9aa3b2"/>
+  <text x="532" y="436" font-size="15" fill="#9aa3b2">Folder name</text>
+  <rect x="820" y="490" width="100" height="36" rx="6" fill="#3d71d9" stroke="#3d71d9"/>
+   <text x="870" y="513" font-size="15" text-anchor="middle" fill="#fff">Create</text><rect x="708" y="490" width="100" height="36" rx="6" fill="#fff" stroke="#c9ced8"/>
+   <text x="758" y="513" font-size="15" text-anchor="middle" fill="#222">Cancel</text><rect x="515.952" y="405.99" width="407.952" height="47.97" fill="none" stroke="#12a150" stroke-width="2" stroke-dasharray="6 4"/>
+</svg>

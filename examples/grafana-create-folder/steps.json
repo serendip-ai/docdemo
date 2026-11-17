@@ -1,0 +1,6 @@
+[
+  { "index": 1, "text": "Click **Dashboards** in the primary menu.", "kind": "action" },
+  { "index": 2, "text": "On the **Dashboards** page, click **New** and select **New folder** in the drop-down.", "kind": "action" },
+  { "index": 3, "text": "Enter a unique name.", "kind": "action" },
+  { "index": 4, "text": "Click **Create**", "kind": "action" }
+]

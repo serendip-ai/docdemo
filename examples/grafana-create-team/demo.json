@@ -1,0 +1,455 @@
+{
+  "version": 1,
+  "title": "Create a Grafana Team",
+  "generatedAt": "2026-10-04T01:28:53.403Z",
+  "generator": {
+    "name": "docdemo",
+    "version": "0.1.0",
+    "driver": "@playwright/cli@0.1.21",
+    "playwright": "1.64.0-alpha-1789764292000"
+  },
+  "doc": {
+    "url": "https://grafana.com/docs/grafana/v13.2/administration/team-management/configure-grafana-teams/#create-a-grafana-team",
+    "fetchedAt": "2026-10-04T01:28:47.273Z",
+    "steps": [
+      {
+        "index": 1,
+        "text": "Sign in to Grafana as an `org administrator` or `team administrator`.",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "org administrator"
+          },
+          {
+            "kind": "term",
+            "text": "team administrator"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "text": "Click the arrow next to **Administration** in the left-side menu, click **Users and access**, and select **Teams**.",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "Administration",
+            "onPage": true
+          },
+          {
+            "kind": "term",
+            "text": "Users and access",
+            "onPage": true
+          },
+          {
+            "kind": "term",
+            "text": "Teams",
+            "onPage": true
+          },
+          {
+            "kind": "place",
+            "text": "in the left-side menu"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "text": "Click **New Team**.",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "New Team"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "text": "Fill in each field and click **Create**.",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "Create",
+            "onPage": true
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "text": "Click **Save**. You can now add a Team member.",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "Save",
+            "onPage": true
+          }
+        ]
+      }
+    ]
+  },
+  "app": {
+    "url": "http://localhost:3000/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  "status": "complete",
+  "steps": [
+    {
+      "n": 1,
+      "docStep": 1,
+      "instruction": "You are already signed in as an administrator",
+      "image": "assets/001.webp",
+      "status": "ok",
+      "note": "setup: the demo session is already signed in as the Grafana admin user"
+    },
+    {
+      "n": 2,
+      "docStep": 2,
+      "instruction": "Click the arrow next to Administration",
+      "image": "assets/002.webp",
+      "hotspot": {
+        "x": 0.2028,
+        "y": 0.3156,
+        "width": 0.0167,
+        "height": 0.0267
+      },
+      "box": {
+        "x": 0.2056,
+        "y": 0.32,
+        "width": 0.0111,
+        "height": 0.0178
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e141"
+      },
+      "locator": "getByTestId('data-testid navigation mega-menu section toggle /admin')",
+      "where": {
+        "role": "button",
+        "within": [
+          "navigation \"Navigation\""
+        ],
+        "elsewhere": [
+          "banner",
+          "tablist"
+        ],
+        "position": "top-left"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 3,
+      "docStep": 2,
+      "instruction": "Click Users and access",
+      "image": "assets/003.webp",
+      "hotspot": {
+        "x": 0.025,
+        "y": 0.4133,
+        "width": 0.1639,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.0278,
+        "y": 0.4178,
+        "width": 0.1583,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e260"
+      },
+      "locator": "getByRole('link', { name: 'Users and access' })",
+      "where": {
+        "role": "link",
+        "within": [
+          "navigation \"Navigation\""
+        ],
+        "elsewhere": [
+          "banner",
+          "tablist"
+        ],
+        "position": "middle-left"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 4,
+      "docStep": 2,
+      "instruction": "Select Teams",
+      "image": "assets/004.webp",
+      "hotspot": {
+        "x": 0.5028,
+        "y": 0.2141,
+        "width": 0.0369,
+        "height": 0.0333
+      },
+      "box": {
+        "x": 0.5056,
+        "y": 0.2185,
+        "width": 0.0313,
+        "height": 0.0244
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e317"
+      },
+      "locator": "getByRole('link', { name: 'Teams' })",
+      "where": {
+        "role": "link",
+        "within": [
+          "main"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "top-center"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 5,
+      "docStep": 3,
+      "instruction": "Click New team",
+      "image": "assets/005.webp",
+      "hotspot": {
+        "x": 0.9052,
+        "y": 0.0844,
+        "width": 0.0753,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.908,
+        "y": 0.0889,
+        "width": 0.0698,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e372"
+      },
+      "locator": "getByRole('link', { name: 'New team' })",
+      "where": {
+        "role": "link",
+        "within": [
+          "main"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "top-right"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 6,
+      "docStep": 4,
+      "instruction": "Type \"DocDemo Create Team\" in Name",
+      "image": "assets/006.webp",
+      "hotspot": {
+        "x": 0.2417,
+        "y": 0.1922,
+        "width": 0.4222,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.2444,
+        "y": 0.1967,
+        "width": 0.4167,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "fill",
+        "ref": "e462",
+        "value": "DocDemo Create Team"
+      },
+      "locator": "getByRole('textbox', { name: 'Name *' })",
+      "where": {
+        "role": "textbox",
+        "within": [
+          "main",
+          "form"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "top-center"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 7,
+      "docStep": 4,
+      "instruction": "Type \"docdemo-team@example.com\" in Email",
+      "image": "assets/007.webp",
+      "hotspot": {
+        "x": 0.2417,
+        "y": 0.2856,
+        "width": 0.4222,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.2444,
+        "y": 0.29,
+        "width": 0.4167,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "fill",
+        "ref": "e472",
+        "value": "docdemo-team@example.com"
+      },
+      "locator": "getByRole('textbox', { name: 'Email This is optional and is' })",
+      "where": {
+        "role": "textbox",
+        "within": [
+          "main",
+          "form"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "top-center"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 8,
+      "docStep": 4,
+      "instruction": "Click Create",
+      "image": "assets/008.webp",
+      "hotspot": {
+        "x": 0.2417,
+        "y": 0.4556,
+        "width": 0.0594,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.2444,
+        "y": 0.46,
+        "width": 0.0538,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e485"
+      },
+      "locator": "getByRole('button', { name: 'Create' })",
+      "where": {
+        "role": "button",
+        "within": [
+          "main",
+          "form"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "middle-left"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 9,
+      "docStep": 5,
+      "instruction": "Click Open team details",
+      "image": "assets/009.webp",
+      "hotspot": {
+        "x": 0.5393,
+        "y": 0.5278,
+        "width": 0.1072,
+        "height": 0.0333
+      },
+      "box": {
+        "x": 0.5421,
+        "y": 0.5322,
+        "width": 0.1017,
+        "height": 0.0244
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e501"
+      },
+      "locator": "getByRole('link', { name: 'Open team details' })",
+      "where": {
+        "role": "link",
+        "within": [
+          "main",
+          "form"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "middle-center"
+      },
+      "status": "ok",
+      "note": "doc says to click Save after Create; UI shows no Save button on the New team page, it shows \"Team created successfully.\" with an \"Open team details\" link"
+    },
+    {
+      "n": 10,
+      "docStep": 5,
+      "instruction": "The team is already saved; you can now add a team member",
+      "image": "assets/010.webp",
+      "status": "ok",
+      "note": "doc says click Save after Create; UI saves the team on Create (\"Team created successfully.\"), and the only Save button is the disabled one in the Add member panel on the team page"
+    },
+    {
+      "n": 11,
+      "instruction": "Done",
+      "image": "assets/011.webp",
+      "status": "ok"
+    }
+  ],
+  "checks": [
+    {
+      "docStep": 1,
+      "claim": "org administrator",
+      "kind": "term",
+      "verdict": "not-ui",
+      "note": "role name, not UI text"
+    },
+    {
+      "docStep": 1,
+      "claim": "team administrator",
+      "kind": "term",
+      "verdict": "not-ui",
+      "note": "role name, not UI text"
+    },
+    {
+      "docStep": 2,
+      "claim": "in the left-side menu",
+      "kind": "place",
+      "verdict": "ok",
+      "note": "Administration and its arrow are in the left-hand Navigation landmark (top-left), and Users and access is in the same menu; Teams was then opened from the Users and access page (it also appears in that menu)"
+    },
+    {
+      "docStep": 3,
+      "claim": "New Team",
+      "kind": "term",
+      "verdict": "doc",
+      "note": "doc says \"New Team\"; UI shows \"New team\""
+    },
+    {
+      "docStep": 5,
+      "claim": "Save",
+      "kind": "term",
+      "verdict": "noted",
+      "note": "the Save on the page belongs to the Add member panel and is disabled; the frame note reports that no team Save step exists"
+    }
+  ]
+}

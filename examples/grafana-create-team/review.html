@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DocDemo</title>
+<style>
+:root {
+  --bg: #f5f6f8; --panel: #fff; --text: #1b1e24; --muted: #616875; --line: #e2e5ea;
+  --hot: #e0317a; --active-bg: #fcebf2; --btn: #fff; --btn-hover: #f0f2f5; --stage: #e8ebef;
+  --danger: #c3291f; --danger-bg: #fdeceb; --focus: #2f6fed;
+  --shadow: 0 1px 2px rgb(0 0 0 / .06), 0 6px 20px rgb(0 0 0 / .07);
+  color-scheme: light dark;
+}
+/* ?theme=light or ?theme=dark overrides the viewer's system setting (to match the host doc site). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme=light]) {
+    --bg: #111317; --panel: #181b20; --text: #e7e9ee; --muted: #9aa1ad; --line: #2b3038;
+    --active-bg: #37192a; --btn: #20242b; --btn-hover: #2a2f37; --stage: #0b0d10;
+    --danger: #ff7a70; --danger-bg: #3a1d1c; --focus: #7aa7ff;
+    --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 6px 20px rgb(0 0 0 / .35);
+  }
+}
+:root[data-theme=dark] {
+  --bg: #111317; --panel: #181b20; --text: #e7e9ee; --muted: #9aa1ad; --line: #2b3038;
+  --active-bg: #37192a; --btn: #20242b; --btn-hover: #2a2f37; --stage: #0b0d10;
+  --danger: #ff7a70; --danger-bg: #3a1d1c; --focus: #7aa7ff;
+  --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 6px 20px rgb(0 0 0 / .35);
+  color-scheme: dark;
+}
+:root[data-theme=light] { color-scheme: light; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--bg); color: var(--text); display: grid; grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+a { color: inherit; text-underline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+code { font: .88em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: rgb(127 127 127 / .16); padding: 1px 4px; border-radius: 4px; }
+
+.panel { background: var(--panel); border-right: 1px solid var(--line); display: flex; flex-direction: column; height: 100vh; min-height: 0; }
+.panel header { padding: 20px 20px 14px; border-bottom: 1px solid var(--line); }
+h1 { font-size: 17px; line-height: 1.3; margin: 0 0 6px; }
+.tag { display: inline-block; vertical-align: 2px; margin-left: 6px; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 999px; color: var(--danger); background: var(--danger-bg); }
+.from { margin: 0; font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.from a { color: var(--hot); font-weight: 600; }
+.steps { list-style: none; margin: 0; padding: 12px 12px 24px; overflow: auto; flex: 1; min-height: 0; }
+.steps li { position: relative; padding: 9px 12px 9px 44px; margin: 2px 0; border-radius: 8px; overflow-wrap: anywhere; }
+.steps li::before {
+  content: attr(data-n); position: absolute; left: 12px; top: 10px; width: 22px; height: 22px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 12px; font-weight: 700; background: var(--line); color: var(--text);
+}
+.steps li.dim { color: var(--muted); font-size: 14px; }
+.steps li.dim::before { background: transparent; border: 1px dashed var(--line); }
+.steps li.past::before { content: "\2713"; }
+.steps li.active { background: var(--active-bg); }
+.steps li.active::before { background: var(--hot); color: #fff; border: 0; }
+.steps li.failed::before { background: var(--danger); color: #fff; content: "!"; }
+.kind { display: block; font-size: 10.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.now { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgb(127 127 127 / .2); font-size: 14px; font-weight: 600; }
+.now small { display: block; font-size: 12px; font-weight: 400; color: var(--muted); }
+
+main { height: 100vh; min-width: 0; padding: 20px 24px 16px; display: grid; place-items: start center; container-type: size; }
+/* The column holds frame + caption + controls; 150px is reserved for everything below the frame. */
+.view { display: flex; flex-direction: column; gap: 12px; width: min(100cqw, (100cqh - 150px) * var(--ar, 1.6)); min-width: min(100%, 520px); }
+.view.with-banner { width: min(100cqw, (100cqh - 300px) * var(--ar, 1.6)); }
+.frame {
+  position: relative; width: 100%; aspect-ratio: var(--ar, 1.6);
+  background: var(--stage); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow);
+}
+.frame.advance { cursor: pointer; }
+.frame img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; border-radius: 7px; }
+.hot {
+  position: absolute; margin: 0; padding: 0; background: transparent; cursor: pointer;
+  border: 3px solid var(--hot); border-radius: 6px; animation: pulse 1.6s ease-out infinite;
+  box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px #fff;
+}
+.hot:focus-visible { outline-offset: 4px; }
+/* Fill and select steps: the viewer types the value, or picks it, in a real control laid over the field in the screenshot. */
+.field.hot { padding: 0 8px; font: inherit; color: #111; background: #fff; }
+input.field { cursor: text; }
+.field.hot:focus { outline: none; animation: none; box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px #fff, 0 0 0 5px rgb(224 49 122 / .35); }
+.field.hot::placeholder { color: inherit; opacity: .5; }
+.field.hot.nudge { animation: shake .45s ease-in-out; }
+@keyframes pulse {
+  from { box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px #fff, 0 0 0 2px rgb(224 49 122 / .6); }
+  to { box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px #fff, 0 0 0 16px rgb(224 49 122 / 0); }
+}
+.nudge { animation: shake .45s ease-in-out; }
+@keyframes shake { 0%, 100% { transform: none; } 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+/* Drag steps: a dot where the drag starts, an arrow to where it ends, and a ghost that shows the motion.
+   The viewer drags from the dot to the ring (mouse, pen or touch), or clicks the dot. */
+.hot.dragstart { width: 34px; height: 34px; border-radius: 50%; translate: -50% -50%; background: rgb(224 49 122 / .25); touch-action: none; cursor: grab; }
+.hot.dragstart:active { cursor: grabbing; }
+.gesture { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.gesture line { stroke: var(--hot); stroke-width: 5; stroke-dasharray: 14 10; stroke-linecap: round; }
+.gesture circle { fill: rgb(224 49 122 / .15); stroke: var(--hot); stroke-width: 4; }
+.gesture polyline { fill: none; stroke: #fff; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; opacity: .9; }
+.ghost {
+  position: absolute; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 50%; pointer-events: none;
+  background: #fff; border: 3px solid var(--hot); box-shadow: 0 2px 8px rgb(0 0 0 / .3); animation: glide 2.2s ease-in-out infinite;
+}
+@keyframes glide {
+  0% { left: var(--fx); top: var(--fy); opacity: 0; }
+  15% { left: var(--fx); top: var(--fy); opacity: 1; }
+  80% { left: var(--tx); top: var(--ty); opacity: 1; }
+  100% { left: var(--tx); top: var(--ty); opacity: 0; }
+}
+.chip {
+  position: absolute; margin: 6px 0; max-width: 60%; padding: 3px 10px; border-radius: 999px; pointer-events: none;
+  background: var(--hot); color: #fff; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  box-shadow: 0 2px 8px rgb(0 0 0 / .25);
+}
+.chip.typed::before { content: ""; display: inline-block; width: 1.25em; height: .8em; margin-right: 6px; vertical-align: -1px; border: 1.5px solid currentColor; border-radius: 2px;
+  background: linear-gradient(currentColor 0 0) 50% 75% / 50% 1.5px no-repeat; }
+.badge {
+  position: absolute; left: 50%; bottom: 8%; translate: -50% 0; padding: 12px 20px; border-radius: 12px; cursor: pointer;
+  font: inherit; font-size: 18px; font-weight: 600; color: #fff; background: rgb(18 20 25 / .9); border: 2px solid var(--hot);
+  box-shadow: 0 6px 24px rgb(0 0 0 / .35); white-space: nowrap;
+}
+kbd { font: 600 .9em ui-monospace, SFMono-Regular, Menlo, monospace; padding: 2px 8px; margin-left: 4px; border-radius: 6px; background: #fff; color: #111; box-shadow: inset 0 -2px 0 #bbb; }
+@media (prefers-reduced-motion: reduce) {
+  .hot { animation: none; box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px #fff, 0 0 0 5px rgb(224 49 122 / .35); }
+  .nudge { animation: none; background-color: rgb(224 49 122 / .45); }
+  .ghost { display: none; }
+  .field.hot.nudge { animation: none; background: #fbd3e3 !important; color: #111 !important; }
+}
+
+.caption, .banner { margin: 0; padding: 10px 14px; border-radius: 8px; font-size: 14px; }
+.caption { background: var(--panel); border: 1px solid var(--line); color: var(--muted); }
+.caption strong { color: var(--text); }
+.banner { background: var(--danger-bg); border: 1px solid var(--danger); }
+.banner strong { display: block; color: var(--danger); }
+.banner .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 8px; }
+.end { aspect-ratio: var(--ar, 1.6); display: grid; place-items: center; }
+.card {
+  width: min(100%, 520px); padding: 24px; text-align: center; background: var(--panel);
+  border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); overflow: auto; max-height: 100%;
+}
+.card img { width: 100%; max-width: 320px; border-radius: 6px; border: 1px solid var(--line); }
+.card h2 { font-size: 20px; margin: 12px 0 4px; }
+.card p { margin: 6px 0; }
+.muted { color: var(--muted); font-size: 13px; }
+.controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.progress { margin-left: auto; color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.btn { font: inherit; font-size: 14px; padding: 7px 16px; border-radius: 8px; border: 1px solid var(--line); background: var(--btn); color: var(--text); cursor: pointer; }
+.btn:hover:not(:disabled) { background: var(--btn-hover); }
+.btn.primary { background: var(--hot); border-color: var(--hot); color: #fff; }
+.btn.primary:hover:not(:disabled) { background: var(--hot); filter: brightness(.9); }
+.btn:disabled { opacity: .45; cursor: default; }
+.fatal { max-width: 460px; text-align: center; color: var(--muted); }
+
+@media (max-width: 820px) {
+  body { display: block; height: auto; }
+  .panel { height: auto; max-height: 42vh; border-right: 0; border-bottom: 1px solid var(--line); }
+  .panel header { padding: 14px 16px 10px; }
+  .steps { padding: 8px 8px 12px; }
+  main { display: block; height: auto; padding: 12px 16px 16px; container-type: normal; }
+  .view { width: 100%; min-width: 0; }
+  .badge { font-size: 15px; padding: 8px 14px; }
+}
+
+/* ?embed: for an iframe on the doc page itself. The page already shows the doc's steps, so the step
+   list is hidden and the current step goes in the controls. The screenshot gets whatever height the
+   caption and controls leave, at its own aspect ratio, so the demo fits an iframe of any size. */
+.stage { display: contents; }
+.where { display: none; }
+body.embed { display: block; background: var(--panel); }
+body.embed .panel, body.embed .controls [data-restart], body.embed #endDoc { display: none; }
+body.embed main { height: 100vh; padding: 8px 8px 6px; display: block; container-type: normal; }
+body.embed .view, body.embed .view.with-banner { width: 100%; min-width: 0; height: 100%; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 8px; }
+body.embed .stage { display: grid; place-items: center; min-height: 0; container-type: size; }
+body.embed .frame, body.embed .end { width: min(100cqw, 100cqh * var(--ar, 1.6)); }
+body.embed .caption { padding: 6px 10px; font-size: 13px; }
+body.embed .controls { flex-wrap: nowrap; }
+body.embed .where { display: block; flex: 1; min-width: 0; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body.embed .progress { margin-left: 0; }
+</style>
+</head>
+<body>
+<aside class="panel">
+  <header>
+    <h1><span id="title">Loading demo…</span><span class="tag" id="partial" hidden>Partial demo</span></h1>
+    <p class="from" id="from" hidden><a target="_blank" rel="noopener">From the docs</a> <span></span></p>
+  </header>
+  <ol class="steps" id="steps" aria-label="Documented steps"></ol>
+</aside>
+<main>
+  <div class="view" id="view">
+    <div class="stage">
+    <div class="frame" id="frame" hidden>
+      <img id="shot" alt="">
+      <svg class="gesture" id="gesture" aria-hidden="true" hidden>
+        <defs><marker id="gHead" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e0317a"/></marker></defs>
+        <line id="gLine" marker-end="url(#gHead)"/><circle id="gEnd" r="22"/><polyline id="gTrail" points=""/>
+      </svg>
+      <span class="ghost" id="ghost" hidden></span>
+      <button class="hot" id="hot" type="button" hidden></button>
+      <input class="hot field" id="typein" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" hidden>
+      <select class="hot field" id="pick" hidden></select>
+      <span class="chip" id="chip" hidden></span>
+      <button class="badge" id="badge" type="button" hidden></button>
+    </div>
+    <section class="end" id="end" hidden aria-live="polite"><div class="card">
+      <img id="endShot" alt="Final result">
+      <h2 id="endTitle"></h2>
+      <p id="endCounts"></p>
+      <p><a id="endDoc" target="_blank" rel="noopener">Read the original doc</a></p>
+      <p><button class="btn primary" type="button" data-restart>Restart</button></p>
+      <p class="muted">Generated by DocDemo</p>
+    </div></section>
+    </div>
+    <p class="caption" id="caption" hidden aria-live="polite"></p>
+    <div class="banner" id="banner" role="alert" hidden>
+      <strong>This step could not be performed as documented</strong>
+      <span id="bannerNote"></span>
+      <div class="row"><a id="bannerDoc" target="_blank" rel="noopener">Read the original doc</a>
+        <button class="btn" type="button" data-restart>Restart</button></div>
+    </div>
+    <nav class="controls" aria-label="Demo controls">
+      <button class="btn" id="back" type="button">Back</button>
+      <button class="btn primary" id="next" type="button">Next</button>
+      <span class="where" id="where"></span>
+      <span class="progress" id="progress" aria-live="polite"></span>
+      <button class="btn" type="button" data-restart>Restart</button>
+    </nav>
+  </div>
+</main>
+<script>
+const DEMO = {"version":1,"title":"Create a Grafana Team","generatedAt":"2026-10-04T01:28:53.403Z","generator":{"name":"docdemo","version":"0.1.0","driver":"@playwright/cli@0.1.21","playwright":"1.64.0-alpha-1789764292000"},"doc":{"url":"https://grafana.com/docs/grafana/v13.2/administration/team-management/configure-grafana-teams/#create-a-grafana-team","fetchedAt":"2026-10-04T01:28:47.273Z","steps":[{"index":1,"text":"Sign in to Grafana as an `org administrator` or `team administrator`.","kind":"action","claims":[{"kind":"term","text":"org administrator"},{"kind":"term","text":"team administrator"}]},{"index":2,"text":"Click the arrow next to **Administration** in the left-side menu, click **Users and access**, and select **Teams**.","kind":"action","claims":[{"kind":"term","text":"Administration","onPage":true},{"kind":"term","text":"Users and access","onPage":true},{"kind":"term","text":"Teams","onPage":true},{"kind":"place","text":"in the left-side menu"}]},{"index":3,"text":"Click **New Team**.","kind":"action","claims":[{"kind":"term","text":"New Team"}]},{"index":4,"text":"Fill in each field and click **Create**.","kind":"action","claims":[{"kind":"term","text":"Create","onPage":true}]},{"index":5,"text":"Click **Save**. You can now add a Team member.","kind":"action","claims":[{"kind":"term","text":"Save","onPage":true}]}]},"app":{"url":"http://localhost:3000/","viewport":{"width":1440,"height":900}},"status":"complete","steps":[{"n":1,"docStep":1,"instruction":"You are already signed in as an administrator","image":"assets/001.webp","status":"ok","note":"setup: the demo session is already signed in as the Grafana admin user"},{"n":2,"docStep":2,"instruction":"Click the arrow next to Administration","image":"assets/002.webp","hotspot":{"x":0.2028,"y":0.3156,"width":0.0167,"height":0.0267},"box":{"x":0.2056,"y":0.32,"width":0.0111,"height":0.0178},"action":{"kind":"click","ref":"e141"},"locator":"getByTestId('data-testid navigation mega-menu section toggle /admin')","where":{"role":"button","within":["navigation \"Navigation\""],"elsewhere":["banner","tablist"],"position":"top-left"},"status":"ok"},{"n":3,"docStep":2,"instruction":"Click Users and access","image":"assets/003.webp","hotspot":{"x":0.025,"y":0.4133,"width":0.1639,"height":0.0444},"box":{"x":0.0278,"y":0.4178,"width":0.1583,"height":0.0356},"action":{"kind":"click","ref":"e260"},"locator":"getByRole('link', { name: 'Users and access' })","where":{"role":"link","within":["navigation \"Navigation\""],"elsewhere":["banner","tablist"],"position":"middle-left"},"status":"ok"},{"n":4,"docStep":2,"instruction":"Select Teams","image":"assets/004.webp","hotspot":{"x":0.5028,"y":0.2141,"width":0.0369,"height":0.0333},"box":{"x":0.5056,"y":0.2185,"width":0.0313,"height":0.0244},"action":{"kind":"click","ref":"e317"},"locator":"getByRole('link', { name: 'Teams' })","where":{"role":"link","within":["main"],"elsewhere":["navigation \"Navigation\"","banner","navigation \"Breadcrumbs\""],"position":"top-center"},"status":"ok"},{"n":5,"docStep":3,"instruction":"Click New team","image":"assets/005.webp","hotspot":{"x":0.9052,"y":0.0844,"width":0.0753,"height":0.0444},"box":{"x":0.908,"y":0.0889,"width":0.0698,"height":0.0356},"action":{"kind":"click","ref":"e372"},"locator":"getByRole('link', { name: 'New team' })","where":{"role":"link","within":["main"],"elsewhere":["navigation \"Navigation\"","banner","navigation \"Breadcrumbs\""],"position":"top-right"},"status":"ok","note":"doc says \"New Team\"; UI shows \"New team\""},{"n":6,"docStep":4,"instruction":"Type \"DocDemo Create Team\" in Name","image":"assets/006.webp","hotspot":{"x":0.2417,"y":0.1922,"width":0.4222,"height":0.0444},"box":{"x":0.2444,"y":0.1967,"width":0.4167,"height":0.0356},"action":{"kind":"fill","ref":"e462","value":"DocDemo Create Team"},"locator":"getByRole('textbox', { name: 'Name *' })","where":{"role":"textbox","within":["main","form"],"elsewhere":["navigation \"Navigation\"","banner","navigation \"Breadcrumbs\""],"position":"top-center"},"status":"ok"},{"n":7,"docStep":4,"instruction":"Type \"docdemo-team@example.com\" in Email","image":"assets/007.webp","hotspot":{"x":0.2417,"y":0.2856,"width":0.4222,"height":0.0444},"box":{"x":0.2444,"y":0.29,"width":0.4167,"height":0.0356},"action":{"kind":"fill","ref":"e472","value":"docdemo-team@example.com"},"locator":"getByRole('textbox', { name: 'Email This is optional and is' })","where":{"role":"textbox","within":["main","form"],"elsewhere":["navigation \"Navigation\"","banner","navigation \"Breadcrumbs\""],"position":"top-center"},"status":"ok"},{"n":8,"docStep":4,"instruction":"Click Create","image":"assets/008.webp","hotspot":{"x":0.2417,"y":0.4556,"width":0.0594,"height":0.0444},"box":{"x":0.2444,"y":0.46,"width":0.0538,"height":0.0356},"action":{"kind":"click","ref":"e485"},"locator":"getByRole('button', { name: 'Create' })","where":{"role":"button","within":["main","form"],"elsewhere":["navigation \"Navigation\"","banner","navigation \"Breadcrumbs\""],"position":"middle-left"},"status":"ok"},{"n":9,"docStep":5,"instruction":"Click Open team details","image":"assets/009.webp","hotspot":{"x":0.5393,"y":0.5278,"width":0.1072,"height":0.0333},"box":{"x":0.5421,"y":0.5322,"width":0.1017,"height":0.0244},"action":{"kind":"click","ref":"e501"},"locator":"getByRole('link', { name: 'Open team details' })","where":{"role":"link","within":["main","form"],"elsewhere":["navigation \"Navigation\"","banner","navigation \"Breadcrumbs\""],"position":"middle-center"},"status":"ok","note":"doc says to click Save after Create; UI shows no Save button on the New team page, it shows \"Team created successfully.\" with an \"Open team details\" link"},{"n":10,"docStep":5,"instruction":"The team is already saved; you can now add a team member","image":"assets/010.webp","status":"ok"},{"n":11,"instruction":"Done","image":"assets/011.webp","status":"ok"}],"checks":[{"docStep":1,"claim":"org administrator","kind":"term","verdict":"not-ui","note":"role name, not UI text"},{"docStep":1,"claim":"team administrator","kind":"term","verdict":"not-ui","note":"role name, not UI text"},{"docStep":2,"claim":"in the left-side menu","kind":"place","verdict":"ok","note":"Administration and its arrow are in the left-hand Navigation landmark (top-left), and Users and access is in the same menu; Teams was then opened from the Users and access page (it also appears in that menu)"},{"docStep":3,"claim":"New Team","kind":"term","verdict":"doc","note":"doc says \"New Team\"; UI shows \"New team\""},{"docStep":5,"claim":"Save","kind":"term","verdict":"noted","note":"the Save on the page belongs to the Add member panel and is disabled; the frame note reports that no team Save step exists"}]};
+
+const $ = (id) => document.getElementById(id);
+const params = new URLSearchParams(location.search);
+const EMBED = params.has('embed');
+if (EMBED) document.body.classList.add('embed');
+if (/^(light|dark)$/.test(params.get('theme'))) document.documentElement.dataset.theme = params.get('theme');
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pct = (v) => (v * 100).toFixed(3) + '%';
+
+// Decode HTML entities (&lt; etc.) as text; a textarea never runs markup.
+const decoder = document.createElement('textarea');
+const decode = (s) => { decoder.innerHTML = s; return decoder.value; };
+
+// Minimal markdown: `code`, **bold** / __bold__, *em*, [links](url) as their text, backslash escapes.
+// Everything is HTML-escaped after decoding entities.
+function md(src) {
+  return String(src).split(/(`[^`\n]+`)/).map((part, i) => {
+    if (i % 2) return '<code>' + esc(part.slice(1, -1)) + '</code>';
+    part = decode(part.replace(/<\/?(?:a|img|br|span|div|p|sup|sub|kbd|em|strong|b|i|u|code|small|mark|del|ins|figure|figcaption|picture|source|svg|path)\b[^>]*>/gi, ' ')).replace(/!\[[^\]]*\]\([^)]*\)/g, '').replace(/\[([^\]]*)\]\([^)]*\)/g, '$1');
+    const held = [];
+    const s = esc(part.replace(/\\([\\`*_{}[\]()#+\-.!<>~|])/g, (_, c) => (held.push(c), '')))
+      .replace(/\*\*(.+?)\*\*|__(.+?)__/g, (_, a, b) => '<strong>' + (a ?? b) + '</strong>')
+      .replace(/(^|[\s(])[*_]([^*_\s][^*_]*?)[*_](?=[\s).,:;!?]|$)/g, '$1<em>$2</em>');
+    return s.replace(//g, () => esc(held.shift()));
+  }).join('');
+}
+
+// "setup: ..." and "doc says ..." notes get a plain-language label.
+function noteParts(note) {
+  if (/^setup:\s*/i.test(note)) return ['Depends on setup', note.replace(/^setup:\s*/i, '')];
+  if (/doc says/i.test(note)) return ['Doc mismatch', note];
+  return ['', note];
+}
+
+function httpUrl(u) {
+  try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : null; } catch { return null; }
+}
+
+function fatal(msg) {
+  $('title').textContent = 'DocDemo';
+  $('view').innerHTML = '<p class="fatal">' + esc(msg) + '</p>';
+}
+
+(async () => {
+  let demo = DEMO;
+  if (!demo) {
+    try {
+      const res = await fetch('demo.json');
+      if (!res.ok) throw new Error(res.status);
+      demo = await res.json();
+    } catch {
+      return fatal('Could not load the demo data. Open this file via the generated index.html, or serve the folder over HTTP.');
+    }
+  }
+  if (!demo || !Array.isArray(demo.steps) || !demo.steps.length) return fatal('This demo has no frames.');
+  start(demo);
+})();
+
+function start(demo) {
+  const frames = demo.steps;
+  const docSteps = (demo.doc && demo.doc.steps) || [];
+  const END = frames.length; // index of the virtual end card
+  const failedAt = frames.findIndex((f) => f.status === 'failed');
+  const LAST = failedAt >= 0 ? failedAt : END; // a partial demo ends at its failed frame
+  const failedDoc = failedAt >= 0 ? frames[failedAt].docStep : null;
+  const vp = (demo.app && demo.app.viewport) || { width: 1440, height: 900 };
+  const frameEl = $('frame'), shot = $('shot'), hot = $('hot'), typein = $('typein'), pick = $('pick'), chip = $('chip'), badge = $('badge');
+  const gesture = $('gesture'), ghost = $('ghost'), gLine = $('gLine'), gEnd = $('gEnd'), gTrail = $('gTrail');
+  const docUrl = httpUrl(demo.doc && demo.doc.url);
+  let cur = -1;
+
+  document.title = demo.title + ' · DocDemo';
+  $('title').textContent = demo.title;
+  $('endTitle').textContent = demo.title;
+  $('partial').hidden = demo.status !== 'partial';
+  $('view').style.setProperty('--ar', vp.width / vp.height);
+  // The frame has the viewport's proportions, so the gesture is drawn in viewport pixels.
+  gesture.setAttribute('viewBox', `0 0 ${vp.width} ${vp.height}`);
+  gesture.setAttribute('preserveAspectRatio', 'none');
+  for (const a of [$('from').querySelector('a'), $('endDoc'), $('bannerDoc')]) {
+    if (docUrl) a.href = docUrl; else a.hidden = true;
+  }
+  if (docUrl) {
+    $('from').hidden = false;
+    $('from').querySelector('span').textContent = '· ' + (demo.doc.title || new URL(docUrl).hostname);
+  }
+
+  // Frame indices per doc step, and the doc-step list.
+  const byDoc = new Map();
+  frames.forEach((f, i) => { if (f.docStep) { if (!byDoc.has(f.docStep)) byDoc.set(f.docStep, []); byDoc.get(f.docStep).push(i); } });
+  const items = new Map();
+  for (const d of docSteps) {
+    const li = document.createElement('li');
+    li.dataset.n = d.index;
+    if (d.kind !== 'action') {
+      li.className = 'dim';
+      li.innerHTML = '<span class="kind">' + esc(d.kind) + '</span>';
+    }
+    const text = document.createElement('span');
+    text.innerHTML = md(d.text);
+    const now = document.createElement('div');
+    now.className = 'now';
+    now.hidden = true;
+    li.append(text, now);
+    $('steps').append(li);
+    items.set(d.index, { li, now });
+  }
+
+  // End-card counts: M only counts documented action steps that have a successful frame.
+  const actionDocs = new Set(docSteps.filter((d) => d.kind === 'action').map((d) => d.index));
+  const nActions = frames.filter((f) => f.action && f.status === 'ok').length;
+  const covered = new Set(frames.filter((f) => f.status === 'ok' && actionDocs.has(f.docStep) && f.docStep !== failedDoc).map((f) => f.docStep)).size;
+  $('endCounts').textContent = `${nActions} action${nActions === 1 ? '' : 's'} across ${covered} of ${actionDocs.size} documented steps`;
+  $('endShot').src = frames[frames.length - 1].image;
+
+  function setHash(h) {
+    if (location.hash.slice(1) === h) return;
+    try { history.replaceState(null, '', '#' + h); } catch { location.hash = h; }
+  }
+  function fromHash() {
+    const h = location.hash.slice(1);
+    if (h === 'end') return LAST;
+    const n = parseInt(h, 10);
+    return n >= 1 && n <= frames.length ? Math.min(n - 1, LAST) : 0;
+  }
+
+  // Typed values match ignoring case and extra spaces.
+  const same = (a, b) => [a, b].map((s) => String(s).normalize('NFKC').trim().replace(/\s+/g, ' ').toLowerCase()).reduce((x, y) => x === y);
+
+  // The control laid over a fill or select field: a type-in box or a dropdown, or null.
+  let field = null;
+
+  // The control takes the field's own colors from the screenshot, so typing or picking looks like it happens in the app.
+  // Reading pixels fails for a page opened from disk (file://); the control then stays white.
+  function paintField(f) {
+    const h = f.hotspot;
+    try {
+      const c = document.createElement('canvas');
+      c.width = shot.naturalWidth; c.height = shot.naturalHeight;
+      const g = c.getContext('2d', { willReadFrequently: true });
+      g.drawImage(shot, 0, 0);
+      // A row in the upper part of the field, right of where placeholder text usually sits: the most common color wins.
+      const x0 = Math.round((h.x + h.width * 0.5) * c.width), w = Math.max(1, Math.round(h.width * 0.45 * c.width));
+      const px = g.getImageData(x0, Math.round((h.y + h.height * 0.3) * c.height), w, 1).data;
+      const counts = new Map();
+      for (let k = 0; k < px.length; k += 4) {
+        const key = px[k] >> 3 << 16 | px[k + 1] >> 3 << 8 | px[k + 2] >> 3;
+        const e = counts.get(key) || { n: 0, rgb: [px[k], px[k + 1], px[k + 2]] };
+        e.n++; counts.set(key, e);
+      }
+      const [r, gr, b] = [...counts.values()].sort((p, q) => q.n - p.n)[0].rgb;
+      if (frames[cur] !== f || !field) return;
+      field.style.background = `rgb(${r} ${gr} ${b})`;
+      field.style.color = (0.299 * r + 0.587 * gr + 0.114 * b) / 255 > 0.5 ? '#111' : '#f2f3f5';
+    } catch { /* keep the default colors */ }
+  }
+  // A field shrunk with a small screenshot grows around its middle to a size you can type in.
+  // Touch screens get 16px text, below which iOS zooms in on focus.
+  const touch = matchMedia('(pointer: coarse)');
+  function fitField() {
+    const f = frames[cur];
+    if (!field || !f || !f.hotspot) return;
+    const h = f.hotspot, px = h.height * frameEl.clientHeight;
+    const minH = touch.matches ? 34 : 26, grow = Math.max(0, minH - px);
+    field.style.top = grow ? `calc(${pct(h.y)} - ${(grow / 2).toFixed(1)}px)` : pct(h.y);
+    field.style.height = grow ? minH + 'px' : pct(h.height);
+    const size = Math.min(18, Math.max(px, minH) * 0.3);
+    field.style.fontSize = Math.max(touch.matches ? 16 : 12, size).toFixed(1) + 'px';
+  }
+  new ResizeObserver(fitField).observe(frameEl);
+
+  // doing: the viewer got here by performing the previous step (not Next or the arrow keys), so a type-in box or dropdown takes focus.
+  function show(i, doing = false) {
+    cur = Math.max(0, Math.min(i, LAST));
+    const f = frames[cur];
+    const failed = !!f && f.status === 'failed';
+    frameEl.hidden = !f;
+    $('end').hidden = !!f;
+    setHash(f ? String(cur + 1) : 'end');
+    $('progress').textContent = f ? `${cur + 1} / ${failedAt >= 0 ? failedAt + 1 : frames.length}` : 'Finished';
+    $('back').disabled = cur === 0;
+    $('next').disabled = !f || failed;
+    $('next').textContent = cur === frames.length - 1 ? 'Finish' : 'Next';
+    $('banner').hidden = !failed;
+    $('view').classList.toggle('with-banner', failed);
+    $('bannerNote').textContent = failed ? f.note || '' : '';
+    // Notes are for the writer: only review.html has them, and an embed never shows them.
+    let label = '', cap = '';
+    if (f && !failed) {
+      if (f.note && !EMBED) [label, cap] = noteParts(f.note);
+      else if (!f.docStep) cap = 'Done. This is the result of the documented procedure.';
+    }
+    $('caption').replaceChildren(...(label ? [Object.assign(document.createElement('strong'), { textContent: label + ': ' })] : []), cap);
+    $('caption').hidden = !cap;
+    $('where').textContent = $('where').title = f ? (f.docStep ? `Step ${f.docStep}: ${f.instruction}` : f.instruction) : '';
+    updatePanel(f, failed);
+    if (!f) return;
+
+    shot.src = f.image;
+    shot.alt = f.instruction;
+    const kind = f.status === 'ok' && f.action ? f.action.kind : null;
+    const h = kind && kind !== 'press' ? f.hotspot : null;
+    const typing = !!h && kind === 'fill' && f.action.value != null;
+    // Demos recorded before dropdown choices were kept have no options: those stay click-to-advance.
+    const picking = !!h && kind === 'select' && Array.isArray(f.action.options) && f.action.picked != null;
+    field = typing ? typein : picking ? pick : null;
+    const dragging = !!h && isDrag(f);
+    hot.hidden = !h || !!field;
+    hot.classList.toggle('dragstart', dragging);
+    ghost.hidden = !dragging;
+    gesture.toggleAttribute('hidden', !dragging); // an <svg> has no .hidden property
+    gTrail.setAttribute('points', '');
+    typein.hidden = !typing;
+    pick.hidden = !picking;
+    chip.hidden = true;
+    badge.hidden = kind !== 'press';
+    if (h) {
+      const box = { left: pct(h.x), top: pct(h.y), width: pct(h.width), height: pct(h.height) };
+      Object.assign(hot.style, box);
+      hot.setAttribute('aria-label', f.instruction);
+      const v = f.action.value;
+      if (field) {
+        Object.assign(field.style, box, { background: '', color: '' });
+        field.removeAttribute('aria-invalid');
+        if (typing) {
+          typein.value = '';
+          typein.placeholder = 'Type here, then press Enter';
+          typein.setAttribute('aria-label', `${f.instruction}, then press Enter`);
+        } else {
+          const prompt = new Option('Choose…', '', true, true);
+          prompt.disabled = true;
+          pick.replaceChildren(prompt, ...f.action.options.map((o) => {
+            if (typeof o === 'string') return new Option(o);
+            const g = document.createElement('optgroup');
+            g.label = o.group;
+            g.append(...o.options.map((x) => new Option(x)));
+            return g;
+          }));
+          pick.setAttribute('aria-label', f.instruction);
+        }
+        fitField();
+        shot.decode().then(() => paintField(f), () => {});
+        if (doing) field.focus({ preventScroll: true });
+      }
+      if (dragging) showGesture(f.action);
+      const chipText = (kind === 'fill' || kind === 'select') && v != null
+        ? (kind === 'fill' ? `"${v}"` : `▾ ${f.action.pickedGroup ? f.action.pickedGroup + ' › ' : ''}${f.action.picked ?? v}`)
+        : dragging ? 'Drag along the arrow' : null;
+      if (chipText) {
+        chip.textContent = chipText;
+        chip.classList.toggle('typed', kind === 'fill');
+        // A drag's chip goes under (or over) the whole gesture, so it never covers the dot or the ring.
+        const a = f.action, ry = 34 / vp.height, rx = 26 / vp.width;
+        const g = dragging ? { x: Math.min(a.from.x, a.to.x) - rx, y: Math.min(a.from.y, a.to.y) - ry,
+          x2: Math.max(a.from.x, a.to.x) + rx, y2: Math.max(a.from.y, a.to.y) + ry } : { x: h.x, y: h.y, x2: h.x + h.width, y2: h.y + h.height };
+        const below = g.y2 < 0.85, right = g.x > 0.6;
+        Object.assign(chip.style, {
+          top: below ? pct(g.y2) : '', bottom: below ? '' : pct(1 - g.y),
+          left: right ? '' : pct(Math.max(0, g.x)), right: right ? pct(Math.max(0, 1 - g.x2)) : '',
+        });
+        chip.hidden = false;
+      }
+    }
+    if (kind === 'press') {
+      const keys = String(f.action.value || 'Enter').split('+');
+      badge.innerHTML = 'Press' + keys.map((k) => '<kbd>' + esc(k) + '</kbd>').join('+');
+      badge.setAttribute('aria-label', f.instruction);
+    }
+    frameEl.classList.toggle('advance', !h && kind !== 'press' && !failed);
+    if (frames[cur + 1]) new Image().src = frames[cur + 1].image;
+  }
+
+  // Drag steps: the dot sits where the drag starts, the arrow and ring show where it ends, and the
+  // ghost repeats the motion until the viewer starts dragging.
+  function isDrag(f) {
+    const a = f && f.status === 'ok' && f.action;
+    return !!a && a.kind === 'drag' && !!a.from && !!a.to;
+  }
+  function showGesture(a) {
+    const from = { x: a.from.x * vp.width, y: a.from.y * vp.height }, to = { x: a.to.x * vp.width, y: a.to.y * vp.height };
+    const len = Math.hypot(to.x - from.x, to.y - from.y), cut = len > 60 ? 26 / len : 0;
+    Object.assign(hot.style, { left: pct(a.from.x), top: pct(a.from.y), width: '', height: '' });
+    gLine.setAttribute('x1', from.x); gLine.setAttribute('y1', from.y);
+    gLine.setAttribute('x2', to.x - (to.x - from.x) * cut); gLine.setAttribute('y2', to.y - (to.y - from.y) * cut);
+    gEnd.setAttribute('cx', to.x); gEnd.setAttribute('cy', to.y);
+    for (const [k, v] of [['--fx', a.from.x], ['--fy', a.from.y], ['--tx', a.to.x], ['--ty', a.to.y]]) ghost.style.setProperty(k, pct(v));
+    ghost.style.animation = 'none';
+    void ghost.offsetWidth; // restart the ghost from the dot
+    ghost.style.animation = '';
+  }
+
+  function updatePanel(f, failed) {
+    let activeLi = null;
+    for (const [idx, { li, now }] of items) {
+      const fi = byDoc.get(idx) || [];
+      const active = !!f && f.docStep === idx;
+      li.classList.toggle('active', active);
+      li.classList.toggle('failed', idx === failedDoc);
+      li.classList.toggle('past', idx !== failedDoc && !active && fi.length > 0 && fi[fi.length - 1] < cur);
+      now.hidden = !active;
+      if (!active) continue;
+      activeLi = li;
+      now.textContent = f.instruction;
+      const acts = fi.filter((j) => frames[j].action);
+      if (f.action && acts.length > 1) {
+        const small = document.createElement('small');
+        small.textContent = `action ${acts.indexOf(cur) + 1} of ${acts.length}`;
+        now.append(small);
+      }
+    }
+    // Scroll only the list, never the page.
+    const list = $('steps');
+    if (activeLi) {
+      const r = activeLi.getBoundingClientRect(), lr = list.getBoundingClientRect();
+      if (r.top < lr.top || r.bottom > lr.bottom) list.scrollTop += r.top - lr.top - 12;
+    } else if (!f) list.scrollTop = list.scrollHeight;
+  }
+
+  function go(d, doing = false) {
+    if (d > 0 && $('next').disabled) return;
+    show(cur + d, doing);
+  }
+  function nudge(el) {
+    el.classList.remove('nudge');
+    void el.offsetWidth; // restart the animation
+    el.classList.add('nudge');
+    clearTimeout(el.nudgeTimer);
+    el.nudgeTimer = setTimeout(() => el.classList.remove('nudge'), 500);
+  }
+
+  // A drag that ends near the ring performs the step; one that ends elsewhere nudges the dot. A plain
+  // click on the dot (or Enter on it) performs it too, so the demo works without a pointer.
+  let held = null, skipClick = false;
+  const toVp = (e) => {
+    const r = frameEl.getBoundingClientRect();
+    return { x: (e.clientX - r.left) / r.width * vp.width, y: (e.clientY - r.top) / r.height * vp.height };
+  };
+  const release = () => { held = null; gTrail.setAttribute('points', ''); ghost.hidden = !isDrag(frames[cur]); };
+  hot.addEventListener('pointerdown', (e) => {
+    if (!isDrag(frames[cur]) || e.button > 0) return;
+    e.preventDefault();
+    hot.setPointerCapture(e.pointerId);
+    held = { id: e.pointerId, x: e.clientX, y: e.clientY, moved: false, pts: [toVp(e)] };
+    ghost.hidden = true;
+  });
+  hot.addEventListener('pointermove', (e) => {
+    if (!held || e.pointerId !== held.id) return;
+    if (Math.hypot(e.clientX - held.x, e.clientY - held.y) > 6) held.moved = true;
+    held.pts.push(toVp(e));
+    gTrail.setAttribute('points', held.pts.map((q) => q.x.toFixed(1) + ',' + q.y.toFixed(1)).join(' '));
+  });
+  hot.addEventListener('pointerup', (e) => {
+    if (!held || e.pointerId !== held.id) return;
+    const moved = held.moved, a = frames[cur].action;
+    release();
+    if (!moved) return; // a plain click: the click event performs the step
+    skipClick = true;
+    setTimeout(() => { skipClick = false; });
+    const q = toVp(e), to = { x: a.to.x * vp.width, y: a.to.y * vp.height };
+    const len = Math.hypot(to.x - a.from.x * vp.width, to.y - a.from.y * vp.height);
+    if (Math.hypot(q.x - to.x, q.y - to.y) <= Math.max(48, len * 0.25)) go(1, true);
+    else nudge(hot);
+  });
+  hot.addEventListener('pointercancel', release);
+  hot.addEventListener('click', (e) => { e.stopPropagation(); if (!skipClick) go(1, true); });
+  badge.addEventListener('click', (e) => { e.stopPropagation(); go(1, true); });
+  typein.addEventListener('click', (e) => e.stopPropagation());
+  typein.addEventListener('input', () => typein.removeAttribute('aria-invalid'));
+  typein.addEventListener('keydown', (e) => {
+    e.stopPropagation(); // arrows and Space edit the text instead of moving through the demo
+    if (e.key === 'Escape') typein.blur();
+    if (e.key !== 'Enter' || e.isComposing) return;
+    e.preventDefault();
+    if (same(typein.value, frames[cur].action.value)) return go(1, true);
+    typein.setAttribute('aria-invalid', 'true');
+    nudge(typein);
+  });
+  pick.addEventListener('click', (e) => e.stopPropagation());
+  pick.addEventListener('keydown', (e) => {
+    e.stopPropagation(); // arrows and Space work the dropdown instead of moving through the demo
+    if (e.key === 'Escape') pick.blur();
+  });
+  pick.addEventListener('change', () => {
+    const o = pick.selectedOptions[0], a = frames[cur].action;
+    if (o && same(o.label, a.picked) && (a.pickedGroup == null || (o.parentElement.label && same(o.parentElement.label, a.pickedGroup)))) return go(1, true);
+    pick.setAttribute('aria-invalid', 'true');
+    nudge(pick);
+  });
+  frameEl.addEventListener('click', () => {
+    if (field) {
+      field.focus({ preventScroll: true });
+      nudge(field);
+      if (field === pick) try { pick.showPicker(); } catch { /* not supported: focus is enough */ }
+    } else if (!hot.hidden) nudge(hot);
+    else if (!badge.hidden) nudge(badge);
+    else go(1);
+  });
+  $('next').addEventListener('click', () => go(1));
+  $('back').addEventListener('click', () => go(-1));
+  document.querySelectorAll('[data-restart]').forEach((b) => b.addEventListener('click', () => show(0)));
+  addEventListener('hashchange', () => show(fromHash())); // show() also normalizes an out-of-range hash
+
+  addEventListener('keydown', (e) => {
+    const f = frames[cur];
+    const onControl = e.target.closest && e.target.closest('button:not(#badge), a, input, select, textarea');
+    if (e.repeat) return;
+    if (f && f.status === 'ok' && f.action && f.action.kind === 'press' && !onControl) {
+      const want = String(f.action.value || 'Enter').split('+').pop().toLowerCase();
+      const got = e.key === ' ' ? 'space' : e.key.toLowerCase();
+      if (got === want) { e.preventDefault(); return go(1, true); }
+    }
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    else if (e.key === ' ') {
+      // Let Space activate a focused button or link natively instead of double-advancing.
+      if (e.target.closest && e.target.closest('button, a, input, select, textarea')) return;
+      e.preventDefault();
+      go(1);
+    }
+  });
+
+  show(fromHash());
+}
+</script>
+</body>
+</html>

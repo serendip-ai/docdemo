@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <rect width="1024" height="1024" fill="#16181D"/>
+  <!-- the mark spans about x 326-787, y 250-780: center it and enlarge it a little -->
+  <g transform="translate(512 512) scale(1.12) translate(-556 -515)">
+  <!-- document with a folded corner -->
+  <path d="M352 250 H592 L680 338 V730 a26 26 0 0 1 -26 26 H352 a26 26 0 0 1 -26 -26 V276 a26 26 0 0 1 26 -26 Z" fill="#FFFFFF"/>
+  <path d="M592 250 V312 a26 26 0 0 0 26 26 H680 Z" fill="#2B2F38" opacity=".35"/>
+  <!-- text lines -->
+  <rect x="382" y="346" width="180" height="26" rx="13" fill="#2B2F38"/>
+  <rect x="382" y="404" width="240" height="26" rx="13" fill="#2B2F38" opacity=".55"/>
+  <rect x="382" y="604" width="240" height="26" rx="13" fill="#2B2F38" opacity=".55"/>
+  <rect x="382" y="662" width="160" height="26" rx="13" fill="#2B2F38" opacity=".55"/>
+  <!-- the highlighted step: a hotspot ring around a line -->
+  <rect x="382" y="504" width="200" height="26" rx="13" fill="#E0317A"/>
+  <rect x="356" y="478" width="278" height="78" rx="22" fill="none" stroke="#E0317A" stroke-width="12"/>
+  <!-- click marks -->
+  <g stroke="#E0317A" stroke-width="14" stroke-linecap="round">
+    <line x1="676" y1="470" x2="708" y2="438"/>
+    <line x1="690" y1="522" x2="734" y2="522"/>
+  </g>
+  <!-- cursor, tip on the ring's right edge -->
+  <path transform="translate(612 528) scale(1.25)" d="M0 0 L0 168 L44 128 L76 198 L108 184 L76 116 L136 116 Z"
+        fill="#16181D" stroke="#FFFFFF" stroke-width="10" stroke-linejoin="round"/>
+  </g>
+</svg>

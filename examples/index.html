@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DocDemo examples</title>
+<meta name="description" content="Clickable demos that DocDemo made from how-to pages. Docs that click.">
+<style>
+:root {
+  --bg: #f6f6f8; --panel: #fff; --text: #1b1e24; --muted: #5d6472; --line: #e1e4ea; --hot: #e0317a; --hot-soft: #fcebf2;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #111317; --panel: #181b20; --text: #e7e9ee; --muted: #9aa1ad; --line: #2b3038; --hot: #ff5c9a; --hot-soft: #37192a; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 40px 20px 64px; }
+header { display: flex; align-items: center; gap: 14px; }
+header svg { width: 52px; height: 52px; flex: none; border-radius: 12px; }
+h1 { font-size: 28px; line-height: 1.2; margin: 0; }
+.tag { margin: 2px 0 0; color: var(--muted); }
+.lede { margin: 28px 0 0; max-width: 68ch; }
+h2 { font-size: 19px; margin: 44px 0 6px; }
+.note { margin: 0 0 14px; color: var(--muted); font-size: 15px; max-width: 70ch; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.card { display: grid; gap: 8px; align-content: start; padding: 0 0 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; color: inherit; text-decoration: none; }
+.card:hover, .card:focus-visible { border-color: var(--hot); }
+.card img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; border-bottom: 1px solid var(--line); }
+.card strong, .card span { padding: 0 16px; }
+.card span { color: var(--muted); font-size: 14px; }
+.pill { font-style: normal; justify-self: start; margin-left: 16px; padding: 1px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; color: var(--hot); background: var(--hot-soft); }
+.embed { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px; }
+iframe { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; border: 0; }
+footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
+a { color: var(--hot); }
+:focus-visible { outline: 3px solid var(--hot); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg viewBox="0 0 1024 1024" aria-hidden="true">
+      <rect width="1024" height="1024" fill="#E0317A"/>
+      <g transform="translate(512 512) scale(1.12) translate(-556 -515)">
+        <path d="M352 250 H592 L680 338 V730 a26 26 0 0 1 -26 26 H352 a26 26 0 0 1 -26 -26 V276 a26 26 0 0 1 26 -26 Z" fill="#fff"/>
+        <path d="M592 250 V312 a26 26 0 0 0 26 26 H680 Z" fill="#2A1520" opacity=".35"/>
+        <rect x="382" y="346" width="180" height="26" rx="13" fill="#2A1520"/>
+        <rect x="382" y="404" width="240" height="26" rx="13" fill="#2A1520" opacity=".55"/>
+        <rect x="382" y="604" width="240" height="26" rx="13" fill="#2A1520" opacity=".55"/>
+        <rect x="382" y="662" width="160" height="26" rx="13" fill="#2A1520" opacity=".55"/>
+        <rect x="382" y="504" width="200" height="26" rx="13" fill="#E0317A"/>
+        <rect x="356" y="478" width="278" height="78" rx="22" fill="none" stroke="#E0317A" stroke-width="12"/>
+        <g stroke="#fff" stroke-width="14" stroke-linecap="round"><line x1="676" y1="470" x2="708" y2="438"/><line x1="690" y1="522" x2="734" y2="522"/></g>
+        <path transform="translate(612 528) scale(1.25)" d="M0 0 L0 168 L44 128 L76 198 L108 184 L76 116 L136 116 Z" fill="#1B1E24" stroke="#fff" stroke-width="10" stroke-linejoin="round"/>
+      </g>
+    </svg>
+    <div>
+      <h1>DocDemo examples</h1>
+      <p class="tag">Docs that click: turn a how-to page into a clickable demo of your product.</p>
+    </div>
+  </header>
+
+  <p class="lede">Each demo below was made with one command from a published how-to page and a local copy of the
+    product. Click the highlighted spot, type or pick the value the doc gives, or use the arrow keys, to step through it.</p>
+
+  <h2>Demos</h2>
+  <div class="cards">
+    <a class="card" href="grafana-create-playlist/">
+      <img src="grafana-create-playlist/assets/004.webp" alt="" loading="lazy">
+      <strong>Create a playlist</strong>
+      <span>7 documented steps, 11 actions</span>
+    </a>
+    <a class="card" href="drupal-regional-settings/review.html">
+      <img src="drupal-regional-settings/assets/006.webp" alt="" loading="lazy">
+      <strong>Configure regional settings (Drupal)</strong>
+      <span>3 documented steps, 8 actions</span>
+      <em class="pill">Shows doc mismatches</em>
+    </a>
+    <a class="card" href="grafana-create-folder/">
+      <img src="grafana-create-folder/assets/003.webp" alt="" loading="lazy">
+      <strong>Create a dashboard folder</strong>
+      <span>4 documented steps, 5 actions</span>
+    </a>
+    <a class="card" href="grafana-create-team/review.html">
+      <img src="grafana-create-team/assets/009.webp" alt="" loading="lazy">
+      <strong>Create a team</strong>
+      <span>5 documented steps, 8 actions</span>
+      <em class="pill">Shows doc mismatches</em>
+    </a>
+  </div>
+
+  <h2>Embedded in a doc page</h2>
+  <p class="note">This is how a demo looks on your own doc site, using the snippet DocDemo prints. Embed mode hides
+    the step list, because the doc page already shows the steps.</p>
+  <div class="embed">
+    <iframe src="grafana-create-playlist/index.html?embed" title="Interactive demo: Create a playlist" loading="lazy"></iframe>
+  </div>
+
+  <footer>
+    <p>Get DocDemo on <a href="https://github.com/serendip-ai/docdemo">GitHub</a>.</p>
+    <p>The demos show Grafana OSS 13.2.2 and Drupal 11.4.8. They quote short passages from the Grafana documentation,
+      which remains the property of Grafana Labs, and from the Drupal User Guide, © its contributors under
+      <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a>. Drupal is a registered trademark of
+      Dries Buytaert. DocDemo is not affiliated with Grafana Labs, Dries Buytaert or the Drupal Association.</p>
+  </footer>
+</div>
+</body>
+</html>

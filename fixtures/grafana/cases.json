@@ -1,0 +1,82 @@
+[
+  {
+    "id": "grafana-create-folder",
+    "title": "Create a dashboard folder",
+    "docUrl": "https://grafana.com/docs/grafana/v13.2/visualizations/dashboards/manage-dashboards/#create-a-dashboard-folder",
+    "appUrl": "http://localhost:3000/",
+    "difficulty": "easy",
+    "notes": "Step 2 offers two alternatives; the Dashboards-page New > New folder path is the natural one. Verified 13.2.2: Dashboards page > New (button) > menuitem \"New folder\" opens a \"New folder\" dialog with textbox \"Folder name\" and button \"Create\"."
+  },
+  {
+    "id": "grafana-create-team",
+    "title": "Create a Grafana Team",
+    "docUrl": "https://grafana.com/docs/grafana/v13.2/administration/team-management/configure-grafana-teams/#create-a-grafana-team",
+    "appUrl": "http://localhost:3000/",
+    "difficulty": "easy",
+    "notes": "Step 1 (sign in) is already satisfied by the storage state. up.sh seeds a team named 'DocDemo Team', so use a different name. Watch step 5 ('Click Save'): after Create the team page opens and there may be no Save button, a likely real mismatch. Verified 13.2.2: Administration > Users and access > Teams has a \"New team\" link (doc: \"New Team\"). Form: Name *, Email, \"Auto-create a team folder\" checkbox, Create. After Create the form stays on /org/teams/new, fields go disabled and a status \"Team created successfully.\" with an \"Open team details\" link appears. There is no Save button, so step 5 is a real mismatch. 'New Team' vs the UI's 'New team' is a real (capitalization) doc error."
+  },
+  {
+    "id": "grafana-add-user",
+    "title": "Add a user",
+    "docUrl": "https://grafana.com/docs/grafana/v13.2/administration/user-management/server-user-management/#add-a-user",
+    "appUrl": "http://localhost:3000/",
+    "difficulty": "easy",
+    "notes": "Signed-in admin is a server admin. Use a fake user (e.g. name 'DocDemo User', login 'docdemo-user', password 'docdemo-pass-1'); 'dana' already exists (seeded). No email is sent. Verified 13.2.2: /admin/users has a \"New user\" link; form fields Name *, Email, Username, Password *, button \"Create user\"."
+  },
+  {
+    "id": "grafana-create-service-account",
+    "title": "Create a service account",
+    "docUrl": "https://grafana.com/docs/grafana/v13.2/administration/service-accounts/#create-a-service-account",
+    "appUrl": "http://localhost:3000/",
+    "difficulty": "easy",
+    "notes": "Fragment is the h3 under 'Create a service account in Grafana'. Step 2 compresses a menu path plus a button ('Users and access > Service accounts > Add service account'). Verified 13.2.2: /org/serviceaccounts has an \"Add service account\" link; the form (\"Create service account\") has \"Display name *\", a Role combobox and Create."
+  },
+  {
+    "id": "grafana-create-playlist",
+    "title": "Create a playlist",
+    "docUrl": "https://grafana.com/docs/grafana/v13.2/visualizations/dashboards/create-manage-playlists/#create-a-playlist",
+    "appUrl": "http://localhost:3000/",
+    "difficulty": "medium",
+    "notes": "Dashboards tagged 'docdemo' exist (CPU overview, Request latency, DocDemo Sandbox), so both Add by title and Add by tag work. Verified 13.2.2: Playlists is a sub-item of Dashboards in the left nav (not a tab on the Dashboards page). On a fresh instance there are no playlists, so the page shows an empty state with a \"Create playlist\" link instead of \"New playlist\" (label mismatch on step 3). Form: Name, Interval, Add by title combobox (lists the 3 seeded dashboards), Add by tag \"Tag filter\" (docdemo (3)), Save."
+  },
+  {
+    "id": "grafana-add-contact-point",
+    "title": "Add a contact point",
+    "docUrl": "https://grafana.com/docs/grafana/v13.2/alerting/configure-notifications/manage-contact-points/#add-a-contact-point",
+    "appUrl": "http://localhost:3000/",
+    "difficulty": "medium",
+    "notes": "No SMTP or Slack: choose the Webhook integration with a dummy URL such as http://127.0.0.1:9/docdemo (saving does not send anything; do not click Test). Step 1 names 'Alerts & IRM'; the 13.2.2 nav shows a top-level 'Alerting' item (IRM is a Cloud app), a likely real mismatch. Step 3 (Choose Alertmanager) may not show a dropdown with only the built-in Grafana Alertmanager, so it may be a note. Steps 7 and 8 are optional. Verified 13.2.2: nav Alerting > Notification configuration opens with the \"Contact points\" tab already selected. No \"Choose Alertmanager\" dropdown is shown (only the built-in one). The button is a link \"New contact point\" (aria name \"add contact point\"). Form: Name *, Integration combobox (pick \"Webhook\", then a URL field appears), \"Optional Webhook settings\" and \"Notification settings\" collapsibles, \"Save contact point\". Saving a webhook to http://127.0.0.1:9/docdemo succeeded."
+  },
+  {
+    "id": "grafana-add-team-member",
+    "title": "Add a Team member",
+    "docUrl": "https://grafana.com/docs/grafana/v13.2/administration/team-management/configure-grafana-teams/#add-a-team-member",
+    "appUrl": "http://localhost:3000/",
+    "difficulty": "medium",
+    "notes": "Relies on seeding: team 'DocDemo Team' and user 'Dana Demo' (login dana). The admin is already a member of the seeded team, so add Dana. Hand-run result: in 13.2.2 the Add member panel's first dropdown ('Role to add new permission to') chooses the member type 'User'; only then does a 'User picker' combobox appear (search 'dana'). Member is preselected. The toast after saving says 'Permission updated'. Doc's '+ Add member' button is labelled 'Add member'. Verified 13.2.2: the DocDemo Team page shows Members tab, admin as Admin, and an \"Add member\" button; the panel has combobox \"Role to add new permission to\" (Choose), \"Permission level\" (Member) and a disabled Save."
+  },
+  {
+    "id": "grafana-create-library-panel",
+    "title": "Create a library panel",
+    "docUrl": "https://grafana.com/docs/grafana/v13.2/visualizations/dashboards/build-dashboards/manage-library-panels/#create-a-library-panel",
+    "appUrl": "http://localhost:3000/d/docdemo-sandbox",
+    "difficulty": "hard",
+    "notes": "Starts on the seeded, non-provisioned 'DocDemo Sandbox' dashboard (one TestData panel 'Sandbox traffic'); provisioned dashboards (CPU overview, Request latency) cannot be saved from the UI, so do not use them. Step 2 needs a hover to reveal the panel menu. Verified 13.2.2 end to end on the sandbox: the \"Edit\" button's accessible name is \"Enter edit mode\"; after hovering the panel, button \"Menu for panel Sandbox traffic\" appears; menu item \"More...\" opens a submenu on hover with \"New library panel\"; dialog has \"Library panel name\" (prefilled \"Sandbox traffic\"), a \"Save in folder\" picker and \"Create library panel\". Toolbar Save opens a \"Save dashboard\" drawer with a Message box and Save; afterwards \"Exit edit\" remains. The library element was created and the dashboard saved."
+  },
+  {
+    "id": "grafana-add-custom-variable",
+    "title": "Add a custom variable",
+    "docUrl": "https://grafana.com/docs/grafana/v13.2/visualizations/dashboards/variables/add-template-variables/#add-a-custom-variable",
+    "appUrl": "http://localhost:3000/d/docdemo-sandbox",
+    "difficulty": "hard",
+    "notes": "Step 1 is a link to another section ('Enter general options for any variable': Edit, Add new element > Variable, choose Custom, Name) that the fragment does not include; the run must perform it without those steps being quoted. Use the seeded 'DocDemo Sandbox' dashboard (saveable). CSV values such as 'dev,staging,prod'. Verified 13.2.2 end to end on the sandbox: in edit mode there is an \"Add variable\" button above the panels (and an \"Add\" sidebar with a \"Variable\" button); the type list has a \"Custom\" button; the sidebar shows Name (default custom0), Label, Description, Display, and \"Open variable editor\". The editor dialog has CSV/JSON radios, a values textbox, a live \"Preview of values (N)\" list, and Discard/Apply. There is no Preview button, so step 4 is a real mismatch. Save + Save in the drawer persisted the variable."
+  },
+  {
+    "id": "grafana-create-dashboard",
+    "title": "Create a dashboard",
+    "docUrl": "https://grafana.com/docs/grafana/v13.2/visualizations/dashboards/build-dashboards/create-dashboard/#create-a-dashboard",
+    "appUrl": "http://localhost:3000/",
+    "difficulty": "hard",
+    "notes": "18 steps with branches ('go to step 12'), a reference-only step 11 and Enterprise-only saved queries. TestData is the default data source (random walk), so no query needs writing; step 6 can be satisfied by the default TestData scenario. No generative AI is configured. Verified 13.2.2: Dashboards > New > \"New dashboard\" opens /dashboard/new with the Add sidebar already expanded; its \"Panel\" button adds a panel offering \"Configure visualization\" and \"Use library panel\" (no \"Use saved query\" in OSS). The panel editor has a Queries tab with Data source and TestData Scenario, Refresh, Suggestions / All visualizations tabs, Panel options Title/Description and Panel styles; Save and Back are in the toolbar."
+  }
+]

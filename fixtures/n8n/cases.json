@@ -1,0 +1,82 @@
+[
+  {
+    "id": "n8n-create-workflow",
+    "title": "Create a workflow",
+    "docUrl": "https://docs.n8n.io/build/understand-workflows/create-and-run-workflows#create-a-workflow",
+    "appUrl": "http://localhost:5678/home/workflows",
+    "difficulty": "easy",
+    "notes": "The section has two alternative 3-step lists (side-menu create button, or the Overview page create button); either is valid. Step 2 is informational on the community edition (no projects, always the personal space). In 2.40.6 the side-menu button is 'Add new item' > 'New workflow' and the Overview button is 'Create workflow'; the new canvas shows 'Add first step…'. Quirk: on the empty canvas, clicking the 'Add first step…' paragraph text did not open the nodes panel in testing; the unlabeled button directly above it does (it opens 'What triggers this workflow?' with a 'Search nodes...' box)."
+  },
+  {
+    "id": "n8n-add-schedule-trigger",
+    "title": "Build your first workflow: add a trigger node",
+    "docUrl": "https://docs.n8n.io/build-your-first-workflow#step-two-add-a-trigger-node",
+    "appUrl": "http://localhost:5678/workflow/new",
+    "difficulty": "medium",
+    "notes": "Schedule Trigger with Weeks, 1 week, Monday, 9am, minute 0, then close the node details view. /workflow/new creates an empty workflow and redirects to /workflow/<id>?new=true. Trigger Interval and Trigger at Hour are custom dropdowns (click, snapshot, click option); Trigger on Weekdays is a multi-select that defaults to Sunday, so Monday must be added (and Sunday arguably removed). Fully offline; later steps of this tutorial (NASA, PostBin) need internet and are out of scope. Step 1 quirk: click the unlabeled button above the 'Add first step…' text (the text itself did not open the panel in testing). Step 7: the node details view's close control is an unlabeled button next to the 'Docs' link; Escape also closes it."
+  },
+  {
+    "id": "n8n-add-tag",
+    "title": "Add a tag to a workflow",
+    "docUrl": "https://docs.n8n.io/build/manage-workflows/tag-workflows#add-a-tag-to-a-workflow",
+    "appUrl": "http://localhost:5678/workflow/DocDemoSample001",
+    "difficulty": "easy",
+    "notes": "Seeded workflow 'DocDemo Sample' already has tag docdemo-sales; seeded tags docdemo-reports and docdemo-ops exist. Verified real mismatches: (1) step 1: 2.40.6 has no '+ Add tag' control in the workflow header; tags are edited via the More actions button next to the workflow name > 'Edit description and tags', a modal with Description and a Tags picker (existing tags + 'Manage tags') and a Save button; (2) step 3: after saving, the tags are NOT displayed next to the workflow name in the header (checked at 1440px). A correct run records these as fail/notes, or adds the tag through the modal and notes the deviation."
+  },
+  {
+    "id": "n8n-workflow-settings",
+    "title": "Access workflow settings",
+    "docUrl": "https://docs.n8n.io/build/manage-workflows/configure-workflow-settings#access-workflow-settings",
+    "appUrl": "http://localhost:5678/home/workflows",
+    "difficulty": "easy",
+    "notes": "Step 1 'Open your workflow': open any seeded workflow (DocDemo Sample is the obvious one). The 'three dots' menu in 2.40.6 is a 'More actions' button next to the workflow name in the header (there is a second 'More actions' next to Publish; the one with Settings is next to the name). Doc says upper-right corner; position may be a minor mismatch."
+  },
+  {
+    "id": "n8n-pin-data",
+    "title": "Pin data",
+    "docUrl": "https://docs.n8n.io/build/work-with-data/pin-and-mock-data#pin-data",
+    "appUrl": "http://localhost:5678/workflow/DocDemoSample001",
+    "difficulty": "medium",
+    "notes": "Seeded workflow: Manual trigger -> 'Edit Fields' (sets greeting). Open the Edit Fields node (double-click on canvas or hover > open), select 'Execute step', then 'Pin data' in the OUTPUT panel. Runs fully offline. Double-click is not an act verb; opening the node may require the node's context menu or pressing Enter on the selected node."
+  },
+  {
+    "id": "n8n-filter-executions",
+    "title": "Filter executions",
+    "docUrl": "https://docs.n8n.io/build/understand-workflows/understand-executions/view-executions-for-a-single-workflow#filter-executions",
+    "appUrl": "http://localhost:5678/workflow/DocDemoFlaky0001",
+    "difficulty": "medium",
+    "notes": "Seeded workflow 'DocDemo Flaky Job' has 4 manual executions: 2 succeeded, 2 failed (Stop and Error). Executions is a radio tab in the header ('Editor | Executions | Evaluations'). Step 3 lists filter options; filtering by Status = Failed is the natural choice. Known real mismatch (hand-verified): the Status options are Any Status, Error, Canceled, Queued, Running, Success, Waiting (doc says Failed); the filter dialog also has an undocumented Version filter, and 'Saved custom data' is disabled on community. Choosing Error leaves the 2 failed runs."
+  },
+  {
+    "id": "n8n-publish-workflow",
+    "title": "Publish a workflow",
+    "docUrl": "https://docs.n8n.io/build/understand-workflows/save-and-publish-workflows#publishing-a-workflow",
+    "appUrl": "http://localhost:5678/workflow/DocDemoSchedule1",
+    "difficulty": "medium",
+    "notes": "Seeded workflow 'DocDemo Weekly Report' (Schedule Trigger weekly Monday 09:00 UTC -> Edit Fields) has never been published, so Publish is enabled. Step 1 opens the publish modal, step 2 is optional (version name/description), step 3 publishes. The doc mentions the Shift+P hotkey; prefer the button. Publishing activates a weekly schedule, harmless for a throwaway instance. Minor mismatch: the modal's 'Version name *' defaults to a short label like 'Version f2733a73', not a UUID. The modal has 'Describe changes (optional)', Cancel and Publish; after publishing the header button reads 'Published' (disabled)."
+  },
+  {
+    "id": "n8n-create-credential",
+    "title": "Create a credential",
+    "docUrl": "https://docs.n8n.io/build/understand-workflows/create-and-edit-credentials#create-a-credential",
+    "appUrl": "http://localhost:5678/home/workflows",
+    "difficulty": "medium",
+    "notes": "Two alternative 3-step lists (side-menu create button, or the create split button on Overview). Step 3 'Select the app or service' is open-ended: pick a service that needs no external account, e.g. 'Header Auth' or 'Basic Auth' (fake values like DocDemo / docdemo-secret-1). Saving these generic credentials does not call out; saving a real SaaS credential would try a connection test and fail offline. The procedure ends at selecting the app; filling and saving is beyond the documented steps."
+  },
+  {
+    "id": "n8n-error-workflow",
+    "title": "Create and set an error workflow",
+    "docUrl": "https://docs.n8n.io/build/flow-logic/handle-errors-gracefully#create-and-set-an-error-workflow",
+    "appUrl": "http://localhost:5678/home/workflows",
+    "difficulty": "hard",
+    "notes": "Create a new workflow with Error Trigger as its first node (Add new item > New workflow, click the 'Add first step…' button, search 'Error Trigger'), rename it 'Error Handler' by clicking the header name (an inline textbox), then open 'DocDemo Flaky Job' (seeded, the workflow that fails) > the More actions button next to the name > Settings > Error Workflow (to notify when this one errors) > Error Handler > Save (the settings modal has a Save button). Verified real mismatches: (1) step 3 'Select Save': 2.40.6 autosaves and has no Save button in the editor header; (2) undocumented prerequisite: in the Error Workflow dropdown, 'Error Handler' is DISABLED with the tooltip 'Not published. Can be used for manual testing, but must be published before running in production.' until the Error Handler workflow is published (header Publish > Publish). A run that publishes it first can finish; a run that does not will fail at 4.2. Also the doc itself says 'Error Handler' in step 2 and 'Error handler' in 4.2."
+  },
+  {
+    "id": "n8n-restore-version",
+    "title": "Restore or copy a previous workflow version",
+    "docUrl": "https://docs.n8n.io/build/manage-workflows/view-change-history#restore-or-copy-previous-versions",
+    "appUrl": "http://localhost:5678/workflow/DocDemoSample001/history",
+    "difficulty": "hard",
+    "notes": "Starts on the workflow history view (/workflow/DocDemoSample001/history redirects to /history/<versionId>), which is where this section assumes you are; the previous section's 'Select Workflow history' is, in 2.40.6, header 'More actions' > 'Version history' (no dedicated header icon). The list shows 'Current changes' plus a collapsed '1 version' group that must be expanded to reveal the older version (greeting 'Hello from DocDemo'; current is 'Hello again from DocDemo'). Each entry's Options is an unlabeled button at the right of the row; its menu has Restore version, Publish version (undocumented), Clone to new workflow, Open version in new tab, Download. 'Name version' is absent on community (the doc says it is Business/Enterprise only). Community keeps 1 day of history, which covers a fresh instance."
+  }
+]

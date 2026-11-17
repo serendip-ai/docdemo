@@ -1,0 +1,14 @@
+{
+  "browser": {
+    "contextOptions": {
+      "viewport": { "width": 1440, "height": 900 },
+      "deviceScaleFactor": 1,
+      "reducedMotion": "reduce",
+      "colorScheme": "light",
+      "locale": "en-US",
+      "timezoneId": "UTC"
+    }
+  },
+  "timeouts": { "settle": 0 },
+  "snapshot": { "mode": "none" }
+}

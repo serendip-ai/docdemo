@@ -1,0 +1,14 @@
+{
+  "name": "docdemo",
+  "description": "Docs that click: turn a how-to page into a clickable demo of your product.",
+  "owner": {
+    "name": "Serendip AI"
+  },
+  "plugins": [
+    {
+      "name": "docdemo",
+      "source": "./",
+      "description": "Docs that click: turn a how-to page into a clickable demo of your product."
+    }
+  ]
+}

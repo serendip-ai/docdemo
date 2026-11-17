@@ -1,0 +1,9 @@
+[
+  { "index": 1, "text": "Click **Dashboards** in the main menu.", "kind": "action" },
+  { "index": 2, "text": "Click **Playlists**.", "kind": "action" },
+  { "index": 3, "text": "Click **New playlist**.", "kind": "action" },
+  { "index": 4, "text": "In the **Name** field, enter a descriptive name.", "kind": "action" },
+  { "index": 5, "text": "In the **Interval** field, enter the time interval each dashboard is displayed before moving on to the next dashboard.", "kind": "action" },
+  { "index": 6, "text": "In the **Add dashboards** section, add dashboards to the playlist using the **Add by title** and **Add by tag** drop-down options.", "kind": "action" },
+  { "index": 7, "text": "Click **Save**.", "kind": "action" }
+]

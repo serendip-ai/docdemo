@@ -1,0 +1,12 @@
+node_modules/
+/demo/
+/demo.prev-*/
+.playwright-cli/
+.debug/
+docdemo-auth.json
+.DS_Store
+# Grafana docs are all rights reserved; example demos keep only short quotes, not the full fetched page
+examples/grafana-*/source.md
+.playwright-mcp/
+bench/runs/
+.env

@@ -1,0 +1,10 @@
+[
+  {
+    "id": "drupal-regional-settings",
+    "title": "Configuring default Regional settings",
+    "docUrl": "https://www.drupal.org/docs/user_guide/en/config-basic.html#s-configuring-default-regional-settings",
+    "appUrl": "http://localhost:3003/",
+    "difficulty": "easy",
+    "notes": "Three native selects (Default country, First day of week, Default time zone; the time zone list has optgroups by region, so 'America > Los Angeles' is option 'Los Angeles' in group 'America') and one checkbox to clear ('Users may set their own time zone' starts checked). First day of week is already Sunday on a fresh install. Step 1: the doc's 'Manage administrative menu' is the Administrative sidebar in 11.4.8, and the doc says 'Regional and language' where the menu says 'Region and language'. Save configuration shows 'The configuration options have been saved.'"
+  }
+]

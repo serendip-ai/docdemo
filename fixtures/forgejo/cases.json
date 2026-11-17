@@ -1,0 +1,74 @@
+[
+  {
+    "id": "forgejo-blame-view",
+    "title": "Blame File View",
+    "docUrl": "https://forgejo.org/docs/v16.0/user/repository/blame/",
+    "appUrl": "http://localhost:3002/docdemo-admin/docdemo-repo",
+    "difficulty": "easy",
+    "notes": "The procedure is the numbered list at the top of the page (no fragment; the page's only procedure). Seeded README.md has two commits (\"Initial commit\", \"Expand README\") plus hello.py in a third commit, so step 4's icon (a link with tooltip 'View blame prior to this change') exists on lines from the second commit. Step 3 is informational. Step 4 says 'click the icon' without naming it; the published page shows no icon there either, so this is a real doc error (a reader, or a screen reader user, cannot tell which icon)."
+  },
+  {
+    "id": "forgejo-view-packages",
+    "title": "View packages",
+    "docUrl": "https://forgejo.org/docs/v16.0/user/packages/#view-packages",
+    "appUrl": "http://localhost:3002/",
+    "difficulty": "easy",
+    "notes": "Starts on the dashboard. Seeded repository docdemo-admin/docdemo-repo has the generic package docdemo-tool 1.0.0 linked to it, so its Packages tab is not empty. Step 1 'Go to the repository' requires picking docdemo-repo from the dashboard. 'Go to **Packages** in the navigation bar' is a real (vague) doc error: Packages is a named tab (repository tab bar or profile tab), and the doc should name it."
+  },
+  {
+    "id": "forgejo-download-package",
+    "title": "Download a package",
+    "docUrl": "https://forgejo.org/docs/v16.0/user/packages/#download-a-package",
+    "appUrl": "http://localhost:3002/docdemo-admin/docdemo-repo",
+    "difficulty": "easy",
+    "notes": "Starts on the seeded repository, whose Packages tab lists docdemo-tool 1.0.0. The asset link docdemo-tool.txt responds with Content-Disposition: attachment, so step 3's click starts a browser download and the page does not change. Verified with playwright-cli: clicking the asset link reports 'Downloaded file docdemo-tool.txt' and raises no error; the URL stays on the package page. 'Go to **Packages** in the navigation bar' is a real (vague) doc error: Packages is a named tab (repository tab bar or profile tab), and the doc should name it."
+  },
+  {
+    "id": "forgejo-disable-package-registry",
+    "title": "Disable the Package Registry",
+    "docUrl": "https://forgejo.org/docs/v16.0/user/packages/#disable-the-package-registry",
+    "appUrl": "http://localhost:3002/docdemo-admin/docdemo-repo",
+    "difficulty": "easy",
+    "notes": "Repository-level setting on the seeded repo. In 16.0 the checkbox is not on the main Settings page: it is under Settings > Units (a sub-menu group in the settings sidebar), in the 'Packages' field, labelled 'Enable package linking' (verified in the fixture), while the doc says 'Enable Repository Packages Registry'. Expected outcome: step 2 works but with a label mismatch note (or a fail if the agent does not find it). Saving the form is not written in the doc."
+  },
+  {
+    "id": "forgejo-link-package",
+    "title": "Link a package to a repository",
+    "docUrl": "https://forgejo.org/docs/v16.0/user/packages/#link-a-package-to-a-repository",
+    "appUrl": "http://localhost:3002/",
+    "difficulty": "medium",
+    "notes": "Starts on the dashboard; step 1 means the Packages tab on the user profile (docdemo-admin). Seeded packages: docdemo-lib 0.1.0 (not linked) and docdemo-tool 1.0.0 (already linked to docdemo-repo). Either works; docdemo-lib is the natural choice. Package settings page has 'Link this package to a repository' with a 'Select repository' dropdown (only option docdemo-repo) and an 'Update repository link' button that the doc does not mention. 'Go to **Packages** in the navigation bar' is a real (vague) doc error: Packages is a named tab (repository tab bar or profile tab), and the doc should name it."
+  },
+  {
+    "id": "forgejo-delete-package",
+    "title": "Delete a package",
+    "docUrl": "https://forgejo.org/docs/v16.0/user/packages/#delete-a-package",
+    "appUrl": "http://localhost:3002/docdemo-admin/-/packages",
+    "difficulty": "medium",
+    "notes": "Starts on the user's package list (docdemo-lib, docdemo-tool). Package settings has a 'Danger zone' with 'Delete package'; it opens a confirmation modal ('You are about to delete ... are you sure?', Yes/No) that the doc does not mention; confirming it is expected undocumented UI, not a doc error. 'Go to **Packages** in the navigation bar' is a real (vague) doc error: Packages is a named tab (repository tab bar or profile tab), and the doc should name it."
+  },
+  {
+    "id": "forgejo-protected-tags",
+    "title": "Setting up protected tags",
+    "docUrl": "https://forgejo.org/docs/v16.0/user/repository/protection/#setting-up-protected-tags",
+    "appUrl": "http://localhost:3002/docdemo-admin/docdemo-repo",
+    "difficulty": "medium",
+    "notes": "Hand-driven end to end with the helper: completes 4/4 steps. Settings sidebar has a 'Tags' item (Tag protection page). The 'Allowed users' picker is a custom dropdown that only lists the owner and collaborators (just docdemo-admin; the repo is user-owned, so there is no teams field). Known real mismatch: the doc says 'Select **Save**' but the button is 'Add rule'."
+  },
+  {
+    "id": "forgejo-push-mirror",
+    "title": "Pushing to a remote repository",
+    "docUrl": "https://forgejo.org/docs/v16.0/user/repo-mirror/#pushing-to-a-remote-repository",
+    "appUrl": "http://localhost:3002/docdemo-admin/docdemo-repo",
+    "difficulty": "medium",
+    "notes": "Settings sidebar has 'Repository' (the main settings page) with a 'Mirror settings' section containing the push-mirror form and an 'Add push mirror' button (the doc says 'Add Push Mirror'). ALLOW_LOCALNETWORKS=true, so a local URL such as http://localhost:3002/docdemo-admin/docdemo-mirror-target.git is accepted (verified via API); saving does not contact the remote right away. The 'Authorization' section (step 4) is optional here. The helper's #pushing-to-a-remote-repository section also prints the following h3 subsections (push mirror to GitHub, GitLab, Bitbucket), each with its own numbered list; the procedure under test is ONLY the first list (steps 1-5). The GitHub/GitLab/Bitbucket lists need external accounts and are out of scope. Verified independently: filling 'Git remote repository URL' with http://localhost:3002/docdemo-admin/docdemo-mirror-target.git and clicking 'Add push mirror' in the UI adds a row with 'Synchronize now' / 'Remove'."
+  },
+  {
+    "id": "forgejo-pull-mirror",
+    "title": "Pulling from a remote repository",
+    "docUrl": "https://forgejo.org/docs/v16.0/user/repo-mirror/#pulling-from-a-remote-repository",
+    "appUrl": "http://localhost:3002/",
+    "difficulty": "hard",
+    "notes": "The top-right 'Create…' menu exists as documented. The only remote the fixture provides is the instance itself: http://localhost:3002/docdemo-admin/docdemo-repo.git (Forgejo listens on 3002 inside the container and ALLOW_LOCALNETWORKS=true; a mirror migration from it was verified via API). If the agent picks an external URL the migration may fail or reach the internet; that is not a doc error. The migration form needs a new repository name (docdemo-repo is taken). Step 2 is a service picker (Git, Gitea, Forgejo, GitHub, ...); the form has 'This repository will be a mirror' and 'Migrate repository' as documented. After entering the URL, 'Repository name' auto-fills with 'docdemo-repo', which already exists; the agent must change it (e.g. docdemo-repo-mirror). Verified independently in the UI: Create… > New migration > Git, URL http://localhost:3002/docdemo-admin/docdemo-repo.git, check 'This repository will be a mirror', name docdemo-repo-mirror, 'Migrate repository' lands on the new mirror repo within a few seconds."
+  }
+]

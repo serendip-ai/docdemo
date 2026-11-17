@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mini Notes</title>
+<style>
+  body { font: 15px system-ui, sans-serif; margin: 0; background: #f4f5f7; color: #1d2330; }
+  header { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; background: #fff; border-bottom: 1px solid #dde1e8; }
+  main { padding: 24px; }
+  button { font: inherit; padding: 6px 14px; border-radius: 6px; border: 1px solid #c4cad6; background: #fff; cursor: pointer; }
+  button.primary { background: #3b5bdb; color: #fff; border-color: #3b5bdb; }
+  dialog { border: 1px solid #c4cad6; border-radius: 10px; padding: 20px; width: 360px; }
+  label { display: grid; gap: 6px; margin-bottom: 14px; }
+  input, select { font: inherit; padding: 6px 8px; }
+  li { padding: 6px 0; }
+  .board { display: flex; gap: 16px; margin-top: 16px; }
+  .zone { min-width: 160px; min-height: 60px; padding: 8px; border: 2px dashed #c4cad6; border-radius: 8px; background: #fff; }
+  .card { padding: 6px 10px; border-radius: 6px; background: #ffe9a8; cursor: grab; }
+  canvas { display: block; margin-top: 16px; background: #fff; border: 1px solid #dde1e8; }
+  .monaco-editor { position: relative; width: 480px; min-height: 24px; padding: 4px; background: #fff; border: 1px solid #dde1e8; font: 13px monospace; }
+  .monaco-editor textarea { position: absolute; left: 4px; top: 4px; width: 1px; height: 18px; opacity: 0; border: 0; padding: 0; resize: none; }
+  .view-line { white-space: pre; }
+</style>
+</head>
+<body>
+<header><strong>Mini Notes</strong><button class="primary" id="add">Add note</button></header>
+<main><h1>Notes</h1><ul id="list"></ul>
+  <div class="board">
+    <section class="zone" aria-label="To do"><div class="card" draggable="true" id="card">Milk</div></section>
+    <section class="zone" aria-label="Done" id="done"></section>
+  </div>
+  <canvas id="chart" width="480" height="120" role="img" aria-label="Requests chart"></canvas>
+  <p id="range">All time</p>
+  <label>Filter <input id="filter"></label>
+  <p><button id="save">Save draft</button> <span id="status" role="status"></span></p>
+  <!-- Ping is replaced by a copy of itself when the pointer first reaches it, as a table re-renders when a slow query lands. -->
+  <p><button id="ping" onmouseover="if (!window.swapped) { window.swapped = true; this.outerHTML = this.outerHTML; }"
+    onclick="document.getElementById('status').textContent = 'Pinged'">Ping</button>
+  <!-- A native confirm; once confirmed, other sites fail, the app answers 25 routine 404s, and then its own server fails. -->
+  <button id="delete" onclick="if (confirm('Delete this draft?')) { document.getElementById('status').textContent = 'Deleted';
+    for (let i = 0; i < 25; i++) fetch('http://localhost:' + location.port + '/api/late', { mode: 'no-cors' }).catch(() => {});
+    for (let i = 0; i < 25; i++) fetch('/api/prefs?item=' + i).catch(() => {});
+    setTimeout(() => fetch('/api/save', { method: 'POST' }), 300); }">Delete draft</button>
+  <!-- A time shown only while the pointer is on it, like a chart point's tooltip. -->
+  <button id="when" onmouseover="document.getElementById('tip').hidden = false" onmouseout="document.getElementById('tip').hidden = true">Last run</button>
+  <span id="tip" role="tooltip" hidden>Started 2026-10-31 20:42:00 UTC</span></p>
+  <div class="monaco-editor" id="editor"><textarea class="inputarea" aria-label="Editor content"></textarea><div class="view-lines"></div></div>
+  <p><a href="/explore" id="explore"><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="#3b5bdb" stroke-width="2"/></svg></a></p>
+  <!-- A search that asks the server once the typing has stopped for 400 ms; the server takes 300 ms. -->
+  <label>Search <input id="search"></label><ul id="results" aria-label="Results"></ul>
+  <!-- Archive is replaced by a copy further down when the pointer first reaches it, as a list sorted again would move it. -->
+  <p id="archive-row"><button id="archive" onmouseover="if (!window.archiveMoved) { window.archiveMoved = true; const b = this.cloneNode(true);
+    this.remove(); document.getElementById('archive-spot').append(b); }" onclick="document.getElementById('status').textContent = 'Archived'">Archive</button></p>
+  <div style="height: 120px"></div><p id="archive-spot"></p>
+  <!-- A label no reader can see: it must not count as on the page. -->
+  <button style="visibility: hidden" title="Purge drafts">x</button>
+  <!-- A report the server takes 8 s to answer: a click on it lands, then waits for the page. -->
+  <p><a href="/slow" id="slow">Slow report</a></p>
+</main>
+<dialog id="dlg">
+  <form id="form">
+    <label>Note title <input id="title" name="title"></label>
+    <label>Color <select id="color" name="color">
+      <option value="" disabled selected>Choose a color</option>
+      <option value="y">Yellow</option>
+      <optgroup label="Cool"><option value="g">Green</option><option value="b">Blue</option></optgroup>
+    </select></label>
+    <div style="display:flex; gap:8px; justify-content:flex-end">
+      <button type="button" id="cancel">Cancel</button>
+      <button type="submit" class="primary">Save</button>
+    </div>
+  </form>
+</dialog>
+<script>
+  const dlg = document.getElementById('dlg');
+  document.getElementById('add').onclick = () => dlg.showModal();
+  document.getElementById('cancel').onclick = () => dlg.close();
+  // Native drag and drop: the card moves to the zone it is dropped on.
+  const card = document.getElementById('card');
+  card.ondragstart = e => e.dataTransfer.setData('text/plain', 'card');
+  for (const z of document.querySelectorAll('.zone')) {
+    z.ondragover = e => e.preventDefault();
+    z.ondrop = e => { e.preventDefault(); z.append(card); };
+  }
+  // A chart brush, like a time-series panel: drag across the bars to select a range.
+  const chart = document.getElementById('chart'), g = chart.getContext('2d');
+  g.fillStyle = '#5b8def';
+  for (let i = 0; i < 12; i++) g.fillRect(10 + i * 39, 110 - (20 + (i * 37) % 80), 28, 20 + (i * 37) % 80);
+  let start = null;
+  const frac = e => Math.round((e.clientX - chart.getBoundingClientRect().left) / chart.clientWidth * 100);
+  chart.onmousedown = e => { start = frac(e); };
+  // Like Grafana's query field: leaving the filter runs the query again, and the redraw drops a drag under way.
+  document.getElementById('filter').onblur = () => setTimeout(() => { start = null; }, 30);
+  addEventListener('mouseup', e => {
+    if (start === null) return;
+    const end = frac(e), [a, b] = [Math.min(start, end), Math.max(start, end)];
+    start = null;
+    if (b - a >= 2) document.getElementById('range').textContent = `Selected ${a}% to ${b}%`;
+  });
+  // Saving fails on the server: the page says so, and asks for preferences the server does not have.
+  document.getElementById('save').onclick = async () => {
+    fetch('/api/prefs').catch(() => {});
+    const r = await fetch('/api/save', { method: 'POST', body: 'draft' });
+    document.getElementById('status').textContent = r.ok ? 'Saved' : `Could not save: ${(await r.json()).message}`;
+  };
+  // A code editor like Monaco: the text lives in a model behind a hidden textarea. Typing into the textarea
+  // adds to the end of the text; select all (Ctrl or Cmd+A) then paste replaces it.
+  const ta = document.querySelector('#editor textarea'), lines = document.querySelector('#editor .view-lines');
+  let model = '{job="old"}', all = false;
+  const render = () => lines.replaceChildren(...model.split('\n').map(t => Object.assign(document.createElement('div'), { className: 'view-line', textContent: t.replace(/ /g, '\u00a0') })));
+  ta.addEventListener('input', () => { model += ta.value; ta.value = ''; render(); });
+  ta.addEventListener('keydown', e => { all = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'a'; if (all) e.preventDefault(); });
+  ta.addEventListener('paste', e => { e.preventDefault(); const t = e.clipboardData.getData('text/plain'); model = all ? t : model + t; all = false; render(); });
+  render();
+  let searching;
+  document.getElementById('search').addEventListener('input', e => {
+    clearTimeout(searching);
+    searching = setTimeout(async () => {
+      const r = await fetch('/api/search?q=' + encodeURIComponent(e.target.value));
+      document.getElementById('results').replaceChildren(...(await r.json()).results.map(t => Object.assign(document.createElement('li'), { textContent: t })));
+    }, 400);
+  });
+  document.getElementById('form').onsubmit = e => {
+    e.preventDefault();
+    const li = document.createElement('li');
+    li.textContent = document.getElementById('title').value;
+    document.getElementById('list').append(li);
+    dlg.close();
+  };
+</script>
+</body>
+</html>

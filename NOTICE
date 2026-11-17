@@ -1,0 +1,21 @@
+DocDemo
+Copyright 2026 Serendip Research & Consulting Inc. (Serendip AI)
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Third-party material
+
+The example demos (examples/) and the benchmark fixtures (fixtures/, including
+each app's cases.json and mutants.json) quote short passages from third-party
+product documentation, with links to the original pages. Those passages remain
+the property of their owners and are not covered by this license. For example,
+Grafana Labs documentation is copyright Raintank, Inc. dba Grafana Labs, all
+rights reserved. The Drupal User Guide is copyright its individual
+contributors and licensed under Creative Commons Attribution-ShareAlike 2.0
+(https://creativecommons.org/licenses/by-sa/2.0/).
+
+The example screenshots show Grafana OSS and Drupal. DocDemo is not affiliated
+with Grafana Labs, Dries Buytaert, the Drupal Association, or the makers of any
+other application or tool named in this repository. Product names are
+trademarks of their respective owners. Drupal is a registered trademark of
+Dries Buytaert.

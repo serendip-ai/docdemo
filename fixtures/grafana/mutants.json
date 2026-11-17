@@ -1,0 +1,151 @@
+{
+  "about": "Planted doc errors for bench/run.mjs --mutants. Each mutant applies one find/replace (find must occur exactly once) to the live Grafana doc, which is then served from localhost. A run catches the mutant when it reports a 'doc says' mismatch or a failed step on a doc step containing one of the anchors. 'known' lists anchors of steps with real mismatches in Grafana 13.2.2, so findings there are not counted as false alarms.",
+  "known": {
+    "grafana-create-team": [
+      "Click **Save**",
+      "New Team"
+    ],
+    "grafana-create-playlist": [
+      "New playlist"
+    ],
+    "grafana-add-contact-point": [
+      "Alerts &amp; IRM",
+      "Alerts & IRM",
+      "Choose Alertmanager"
+    ]
+  },
+  "mutants": [
+    {
+      "id": "folder-label",
+      "case": "grafana-create-folder",
+      "type": "label",
+      "find": "4. Click **Create**",
+      "replace": "4. Click **Save folder**",
+      "anchors": [
+        "Save folder"
+      ]
+    },
+    {
+      "id": "folder-nav",
+      "case": "grafana-create-folder",
+      "type": "nav",
+      "find": "1. Click **Dashboards** in the primary menu.\n2. Do one of the following:",
+      "replace": "1. Click **Explore** in the primary menu.\n2. Do one of the following:",
+      "anchors": [
+        "**Explore**"
+      ]
+    },
+    {
+      "id": "team-label",
+      "case": "grafana-create-team",
+      "type": "label",
+      "find": "3. Click **New Team**.",
+      "replace": "3. Click **Add team**.",
+      "anchors": [
+        "Add team"
+      ]
+    },
+    {
+      "id": "team-field",
+      "case": "grafana-create-team",
+      "type": "field",
+      "find": "4. Fill in each field and click **Create**.",
+      "replace": "4. Fill in the **Name** and **Team ID** fields and click **Create**.",
+      "anchors": [
+        "Team ID"
+      ]
+    },
+    {
+      "id": "team-omit",
+      "case": "grafana-create-team",
+      "type": "omission",
+      "find": "2. Click the arrow next to **Administration** in the left-side menu, click **Users and access**, and select **Teams**.\n3. Click **New Team**.\n4. Fill in each field and click **Create**.\n5. Click **Save**.",
+      "replace": "2. Click **New Team**.\n3. Fill in each field and click **Create**.\n4. Click **Save**.",
+      "anchors": [
+        "Sign in to Grafana",
+        "New Team"
+      ]
+    },
+    {
+      "id": "user-nav",
+      "case": "grafana-add-user",
+      "type": "nav",
+      "find": "2. Click **Administration** in the left-side menu, **Users and access**, and then **Users**.\n3. Click **New user**.",
+      "replace": "2. Click **Administration** in the left-side menu, **General**, and then **Users**.\n3. Click **New user**.",
+      "anchors": [
+        "**General**"
+      ]
+    },
+    {
+      "id": "user-omit",
+      "case": "grafana-add-user",
+      "type": "omission",
+      "find": "3. Click **New user**.\n4. Complete the fields and click **Create user**.",
+      "replace": "3. Complete the fields and click **Create user**.",
+      "anchors": [
+        "Complete the fields",
+        "and then **Users**"
+      ]
+    },
+    {
+      "id": "sa-label",
+      "case": "grafana-create-service-account",
+      "type": "label",
+      "find": "4. Click **Create**.",
+      "replace": "4. Click **Generate token**.",
+      "anchors": [
+        "Generate token"
+      ]
+    },
+    {
+      "id": "sa-field",
+      "case": "grafana-create-service-account",
+      "type": "field",
+      "find": "3. Enter a **Display name**.",
+      "replace": "3. Enter a **Service account ID**.",
+      "anchors": [
+        "Service account ID"
+      ]
+    },
+    {
+      "id": "playlist-nav",
+      "case": "grafana-create-playlist",
+      "type": "nav",
+      "find": "1. Click **Dashboards** in the main menu.\n2. Click **Playlists**.\n3. Click **New playlist**.",
+      "replace": "1. Click **Administration** in the main menu.\n2. Click **Playlists**.\n3. Click **New playlist**.",
+      "anchors": [
+        "**Administration**"
+      ]
+    },
+    {
+      "id": "playlist-field",
+      "case": "grafana-create-playlist",
+      "type": "field",
+      "find": "5. In the **Interval** field",
+      "replace": "5. In the **Duration** field",
+      "anchors": [
+        "**Duration**"
+      ]
+    },
+    {
+      "id": "contact-label",
+      "case": "grafana-add-contact-point",
+      "type": "label",
+      "find": "4. Click **+ New contact point**.",
+      "replace": "4. Click **+ Add receiver**.",
+      "anchors": [
+        "Add receiver"
+      ]
+    },
+    {
+      "id": "contact-field",
+      "case": "grafana-add-contact-point",
+      "type": "field",
+      "find": "6. From **Integration**, select a type",
+      "replace": "6. From **Channel type**, select a type",
+      "anchors": [
+        "Channel type"
+      ]
+    }
+  ]
+}

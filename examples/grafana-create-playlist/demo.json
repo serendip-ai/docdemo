@@ -1,0 +1,541 @@
+{
+  "version": 1,
+  "title": "Create a playlist",
+  "generatedAt": "2026-10-04T01:21:46.752Z",
+  "generator": {
+    "name": "docdemo",
+    "version": "0.1.0",
+    "driver": "@playwright/cli@0.1.21",
+    "playwright": "1.64.0-alpha-1789764292000"
+  },
+  "doc": {
+    "url": "https://grafana.com/docs/grafana/v13.2/visualizations/dashboards/create-manage-playlists/#create-a-playlist",
+    "fetchedAt": "2026-10-04T01:21:38.998Z",
+    "steps": [
+      {
+        "index": 1,
+        "text": "Click **Dashboards** in the main menu.",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "Dashboards",
+            "onPage": true
+          },
+          {
+            "kind": "place",
+            "text": "in the main menu"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "text": "Click **Playlists**.",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "Playlists",
+            "onPage": true
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "text": "Click **New playlist**.",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "New playlist",
+            "onPage": true
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "text": "In the **Name** field, enter a descriptive name.",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "Name",
+            "onPage": true
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "text": "In the **Interval** field, enter the time interval each dashboard is displayed before moving on to the next dashboard.",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "Interval",
+            "onPage": true
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "text": "In the **Add dashboards** section, add dashboards to the playlist using the **Add by title** and **Add by tag** drop-down options.",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "Add dashboards",
+            "onPage": true
+          },
+          {
+            "kind": "term",
+            "text": "Add by title",
+            "onPage": true
+          },
+          {
+            "kind": "term",
+            "text": "Add by tag",
+            "onPage": true
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "text": "Click **Save**.",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "Save",
+            "onPage": true
+          }
+        ]
+      }
+    ]
+  },
+  "app": {
+    "url": "http://localhost:3000/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  "status": "complete",
+  "steps": [
+    {
+      "n": 1,
+      "docStep": 1,
+      "instruction": "Click Dashboards in the main menu",
+      "image": "assets/001.webp",
+      "hotspot": {
+        "x": 0.0028,
+        "y": 0.1289,
+        "width": 0.1861,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.0056,
+        "y": 0.1333,
+        "width": 0.1806,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e59"
+      },
+      "locator": "getByRole('link', { name: 'Dashboards' })",
+      "where": {
+        "role": "link",
+        "within": [
+          "navigation \"Navigation\""
+        ],
+        "elsewhere": [
+          "banner",
+          "tablist"
+        ],
+        "position": "top-left"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 2,
+      "docStep": 2,
+      "instruction": "Expand the Dashboards section",
+      "image": "assets/002.webp",
+      "hotspot": {
+        "x": 0.2028,
+        "y": 0.1378,
+        "width": 0.0167,
+        "height": 0.0267
+      },
+      "box": {
+        "x": 0.2056,
+        "y": 0.1422,
+        "width": 0.0111,
+        "height": 0.0178
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e67"
+      },
+      "locator": "getByTestId('data-testid navigation mega-menu section toggle /dashboards')",
+      "where": {
+        "role": "button",
+        "within": [
+          "navigation \"Navigation\""
+        ],
+        "elsewhere": [
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "top-left"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 3,
+      "docStep": 2,
+      "instruction": "Click Playlists",
+      "image": "assets/003.webp",
+      "hotspot": {
+        "x": 0.025,
+        "y": 0.1644,
+        "width": 0.1639,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.0278,
+        "y": 0.1689,
+        "width": 0.1583,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e399"
+      },
+      "locator": "getByRole('link', { name: 'Playlists' })",
+      "where": {
+        "role": "link",
+        "within": [
+          "navigation \"Navigation\""
+        ],
+        "elsewhere": [
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "top-left"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 4,
+      "docStep": 3,
+      "instruction": "Click Create playlist",
+      "image": "assets/004.webp",
+      "hotspot": {
+        "x": 0.5391,
+        "y": 0.5131,
+        "width": 0.1439,
+        "height": 0.0622
+      },
+      "box": {
+        "x": 0.5419,
+        "y": 0.5176,
+        "width": 0.1384,
+        "height": 0.0533
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e493"
+      },
+      "locator": "getByRole('link', { name: 'Create playlist' })",
+      "where": {
+        "role": "link",
+        "within": [
+          "main"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "middle-center"
+      },
+      "status": "ok",
+      "note": "setup: no playlists exist yet, so the empty-state page shows a Create playlist button instead of New playlist"
+    },
+    {
+      "n": 5,
+      "docStep": 4,
+      "instruction": "Type \"DocDemo Playlist\" in Name",
+      "image": "assets/005.webp",
+      "hotspot": {
+        "x": 0.2417,
+        "y": 0.2167,
+        "width": 0.4222,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.2444,
+        "y": 0.2211,
+        "width": 0.4167,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "fill",
+        "ref": "e521",
+        "value": "DocDemo Playlist"
+      },
+      "locator": "getByTestId('data-testid Playlist name')",
+      "where": {
+        "role": "textbox",
+        "within": [
+          "main",
+          "form"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "top-center"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 6,
+      "docStep": 5,
+      "instruction": "Type \"1m\" in Interval",
+      "image": "assets/006.webp",
+      "hotspot": {
+        "x": 0.2417,
+        "y": 0.2911,
+        "width": 0.4222,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.2444,
+        "y": 0.2956,
+        "width": 0.4167,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "fill",
+        "ref": "e530",
+        "value": "1m"
+      },
+      "locator": "getByTestId('data-testid Playlist interval')",
+      "where": {
+        "role": "textbox",
+        "within": [
+          "main",
+          "form"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "top-center"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 7,
+      "docStep": 6,
+      "instruction": "Open the Add by title drop-down",
+      "image": "assets/007.webp",
+      "hotspot": {
+        "x": 0.2417,
+        "y": 0.5379,
+        "width": 0.4222,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.2444,
+        "y": 0.5424,
+        "width": 0.4167,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e544"
+      },
+      "locator": "locator('#dashboard-picker').first()",
+      "where": {
+        "role": "div",
+        "within": [
+          "main",
+          "form"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "middle-center"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 8,
+      "docStep": 6,
+      "instruction": "Select DocDemo Sandbox",
+      "image": "assets/008.webp",
+      "hotspot": {
+        "x": 0.2451,
+        "y": 0.619,
+        "width": 0.4153,
+        "height": 0.0511
+      },
+      "box": {
+        "x": 0.2479,
+        "y": 0.6235,
+        "width": 0.4097,
+        "height": 0.0422
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e594"
+      },
+      "locator": "getByRole('option', { name: 'Dashboards/DocDemo Sandbox' })",
+      "where": {
+        "role": "option",
+        "within": [
+          "listbox \"Select options menu\""
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "middle-center"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 9,
+      "docStep": 6,
+      "instruction": "Open the Add by tag drop-down",
+      "image": "assets/009.webp",
+      "hotspot": {
+        "x": 0.2417,
+        "y": 0.6313,
+        "width": 0.4222,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.2444,
+        "y": 0.6357,
+        "width": 0.4167,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e562"
+      },
+      "locator": "locator('div').filter({ hasText: /^Select a tag$/ }).nth(3)",
+      "where": {
+        "role": "div",
+        "within": [
+          "main",
+          "form"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "middle-center"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 10,
+      "docStep": 6,
+      "instruction": "Select the docdemo tag",
+      "image": "assets/010.webp",
+      "hotspot": {
+        "x": 0.2451,
+        "y": 0.6701,
+        "width": 0.4153,
+        "height": 0.0467
+      },
+      "box": {
+        "x": 0.2479,
+        "y": 0.6746,
+        "width": 0.4097,
+        "height": 0.0378
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e634"
+      },
+      "locator": "getByRole('option', { name: 'Tag option' })",
+      "where": {
+        "role": "option",
+        "within": [
+          "listbox \"Select options menu\""
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "bottom-center"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 11,
+      "docStep": 7,
+      "instruction": "Click Save",
+      "image": "assets/011.webp",
+      "hotspot": {
+        "x": 0.2417,
+        "y": 0.7635,
+        "width": 0.051,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.2444,
+        "y": 0.7679,
+        "width": 0.0454,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e577"
+      },
+      "locator": "getByRole('button', { name: 'Save' })",
+      "where": {
+        "role": "button",
+        "within": [
+          "main",
+          "form"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "bottom-left"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 12,
+      "instruction": "Done",
+      "image": "assets/012.webp",
+      "status": "ok"
+    }
+  ],
+  "checks": [
+    {
+      "docStep": 1,
+      "claim": "in the main menu",
+      "kind": "place",
+      "verdict": "ok",
+      "note": "Dashboards is a link in the left-hand navigation menu (landmark Navigation), which is Grafana's main menu"
+    }
+  ]
+}

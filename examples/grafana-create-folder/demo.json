@@ -1,0 +1,291 @@
+{
+  "version": 1,
+  "title": "Create a dashboard folder",
+  "generatedAt": "2026-10-04T01:24:11.818Z",
+  "generator": {
+    "name": "docdemo",
+    "version": "0.1.0",
+    "driver": "@playwright/cli@0.1.21",
+    "playwright": "1.64.0-alpha-1789764292000"
+  },
+  "doc": {
+    "url": "https://grafana.com/docs/grafana/v13.2/visualizations/dashboards/manage-dashboards/#create-a-dashboard-folder",
+    "fetchedAt": "2026-10-04T01:24:06.669Z",
+    "steps": [
+      {
+        "index": 1,
+        "text": "Click **Dashboards** in the primary menu.",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "Dashboards",
+            "onPage": true
+          },
+          {
+            "kind": "place",
+            "text": "in the primary menu"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "text": "On the **Dashboards** page, click **New** and select **New folder** in the drop-down.",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "Dashboards",
+            "onPage": true
+          },
+          {
+            "kind": "term",
+            "text": "New",
+            "onPage": true
+          },
+          {
+            "kind": "term",
+            "text": "New folder",
+            "onPage": true
+          },
+          {
+            "kind": "place",
+            "text": "in the drop-down"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "text": "Enter a unique name.",
+        "kind": "action",
+        "claims": []
+      },
+      {
+        "index": 4,
+        "text": "Click **Create**",
+        "kind": "action",
+        "claims": [
+          {
+            "kind": "term",
+            "text": "Create",
+            "onPage": true
+          }
+        ]
+      }
+    ]
+  },
+  "app": {
+    "url": "http://localhost:3000/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  "status": "complete",
+  "steps": [
+    {
+      "n": 1,
+      "docStep": 1,
+      "instruction": "Click Dashboards in the primary menu",
+      "image": "assets/001.webp",
+      "hotspot": {
+        "x": 0.0028,
+        "y": 0.1289,
+        "width": 0.1861,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.0056,
+        "y": 0.1333,
+        "width": 0.1806,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e59"
+      },
+      "locator": "getByRole('link', { name: 'Dashboards' })",
+      "where": {
+        "role": "link",
+        "within": [
+          "navigation \"Navigation\""
+        ],
+        "elsewhere": [
+          "banner",
+          "tablist"
+        ],
+        "position": "top-left"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 2,
+      "docStep": 2,
+      "instruction": "Click New",
+      "image": "assets/002.webp",
+      "hotspot": {
+        "x": 0.9204,
+        "y": 0.1011,
+        "width": 0.0602,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.9232,
+        "y": 0.1056,
+        "width": 0.0546,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e247"
+      },
+      "locator": "getByTestId('data-testid CreateNewButton New button')",
+      "where": {
+        "role": "button",
+        "within": [
+          "main"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "top-right"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 3,
+      "docStep": 2,
+      "instruction": "Select New folder in the drop-down",
+      "image": "assets/003.webp",
+      "hotspot": {
+        "x": 0.85,
+        "y": 0.2698,
+        "width": 0.1278,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.8528,
+        "y": 0.2743,
+        "width": 0.1223,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e478"
+      },
+      "locator": "getByRole('menuitem', { name: 'New folder' })",
+      "where": {
+        "role": "menuitem",
+        "within": [
+          "menu"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "top-right"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 4,
+      "docStep": 3,
+      "instruction": "Type \"DocDemo Folder\" in Folder name",
+      "image": "assets/004.webp",
+      "hotspot": {
+        "x": 0.7417,
+        "y": 0.1067,
+        "width": 0.25,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.7444,
+        "y": 0.1111,
+        "width": 0.2444,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "fill",
+        "ref": "e513",
+        "value": "DocDemo Folder"
+      },
+      "locator": "getByTestId('data-testid new-folder-name-input')",
+      "where": {
+        "role": "textbox",
+        "within": [
+          "dialog \"Drawer title New folder\"",
+          "form"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "top-right"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 5,
+      "docStep": 4,
+      "instruction": "Click Create",
+      "image": "assets/005.webp",
+      "hotspot": {
+        "x": 0.8023,
+        "y": 0.1933,
+        "width": 0.0594,
+        "height": 0.0444
+      },
+      "box": {
+        "x": 0.8051,
+        "y": 0.1978,
+        "width": 0.0538,
+        "height": 0.0356
+      },
+      "action": {
+        "kind": "click",
+        "ref": "e526"
+      },
+      "locator": "getByRole('button', { name: 'Create' })",
+      "where": {
+        "role": "button",
+        "within": [
+          "dialog \"Drawer title New folder\"",
+          "form"
+        ],
+        "elsewhere": [
+          "navigation \"Navigation\"",
+          "banner",
+          "navigation \"Breadcrumbs\""
+        ],
+        "position": "top-right"
+      },
+      "status": "ok"
+    },
+    {
+      "n": 6,
+      "instruction": "Done",
+      "image": "assets/006.webp",
+      "status": "ok"
+    }
+  ],
+  "checks": [
+    {
+      "docStep": 1,
+      "claim": "in the primary menu",
+      "kind": "place",
+      "verdict": "ok",
+      "note": "Dashboards link is in the left-hand Navigation landmark, which is Grafana's primary (main) menu"
+    },
+    {
+      "docStep": 2,
+      "claim": "in the drop-down",
+      "kind": "place",
+      "verdict": "ok",
+      "note": "New folder is a menuitem in the menu that drops down after clicking New"
+    }
+  ]
+}

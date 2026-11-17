@@ -1,0 +1,7 @@
+[
+  { "index": 1, "text": "Sign in to Grafana as an `org administrator` or `team administrator`.", "kind": "action" },
+  { "index": 2, "text": "Click the arrow next to **Administration** in the left-side menu, click **Users and access**, and select **Teams**.", "kind": "action" },
+  { "index": 3, "text": "Click **New Team**.", "kind": "action" },
+  { "index": 4, "text": "Fill in each field and click **Create**.", "kind": "action" },
+  { "index": 5, "text": "Click **Save**. You can now add a Team member.", "kind": "action" }
+]

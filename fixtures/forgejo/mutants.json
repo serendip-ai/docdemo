@@ -1,0 +1,179 @@
+{
+  "about": "Planted doc errors for bench/run.mjs --mutants (see fixtures/grafana/mutants.json). Labels were checked against the Forgejo 16.0.5 fixture. The 'behavior' mutant is a claim the UI does not show during the procedure, so a miss there is expected.",
+  "known": {
+    "forgejo-protected-tags": [
+      "allowed users and/or teams",
+      "Select **Save**"
+    ],
+    "forgejo-push-mirror": [
+      "Add Push Mirror"
+    ],
+    "forgejo-disable-package-registry": [
+      "Enable Repository Packages Registry",
+      "Go to **Settings**"
+    ],
+    "forgejo-link-package": [
+      "Choose a repository",
+      "in the navigation bar"
+    ],
+    "forgejo-blame-view": [
+      "click the icon"
+    ],
+    "forgejo-view-packages": [
+      "in the navigation bar"
+    ],
+    "forgejo-download-package": [
+      "in the navigation bar"
+    ],
+    "forgejo-delete-package": [
+      "in the navigation bar"
+    ]
+  },
+  "mutants": [
+    {
+      "id": "blame-control",
+      "case": "forgejo-blame-view",
+      "type": "wrong-control",
+      "why": "History is a real button next to Blame, but it opens the commit list, not the blame view",
+      "find": "2. Click the `Blame` button in the file header bar.",
+      "replace": "2. Click the `History` button in the file header bar.",
+      "anchors": [
+        "`History`"
+      ]
+    },
+    {
+      "id": "blame-outcome",
+      "case": "forgejo-blame-view",
+      "type": "outcome",
+      "why": "claim about the result: author and commit information is on the left",
+      "find": "with author and commit information on the left side.",
+      "replace": "with author and commit information on the right side.",
+      "anchors": [
+        "right side"
+      ]
+    },
+    {
+      "id": "packages-nav",
+      "case": "forgejo-view-packages",
+      "type": "nav",
+      "why": "Activity is a real repository tab, but Packages is its own tab",
+      "find": "2. Go to **Packages** in the navigation bar.\n\nTo view more details",
+      "replace": "2. Go to **Activity** > **Packages**.\n\nTo view more details",
+      "anchors": [
+        "**Activity**"
+      ]
+    },
+    {
+      "id": "download-field",
+      "case": "forgejo-download-package",
+      "type": "field",
+      "why": "the section is Assets; there is no Files section",
+      "find": "3. In the **Assets** section",
+      "replace": "3. In the **Files** section",
+      "anchors": [
+        "**Files**"
+      ]
+    },
+    {
+      "id": "link-order",
+      "case": "forgejo-link-package",
+      "type": "order",
+      "why": "steps 2 and 3 swapped: Settings only exists on a package's page",
+      "find": "2. Select the name of the package to view the details.\n\n3. Navigate to **Settings** on the right-hand side.\n\n4. Choose a repository from the drop-down page to link",
+      "replace": "2. Navigate to **Settings** on the right-hand side.\n\n3. Select the name of the package to view the details.\n\n4. Choose a repository from the drop-down page to link",
+      "anchors": [
+        "Navigate to **Settings**",
+        "Select the name of the package"
+      ]
+    },
+    {
+      "id": "delete-side",
+      "case": "forgejo-delete-package",
+      "type": "location",
+      "why": "Settings is in the right-hand column of the package page",
+      "find": "3. Navigate to **Settings** on the right-hand side.\n\n4. Click **Delete package**",
+      "replace": "3. Navigate to **Settings** on the left-hand side.\n\n4. Click **Delete package**",
+      "anchors": [
+        "left-hand side"
+      ]
+    },
+    {
+      "id": "delete-label",
+      "case": "forgejo-delete-package",
+      "type": "label",
+      "why": "the button is Delete package",
+      "find": "4. Click **Delete package** in the danger zone",
+      "replace": "4. Click **Remove package** in the danger zone",
+      "anchors": [
+        "Remove package"
+      ]
+    },
+    {
+      "id": "tags-nav",
+      "case": "forgejo-protected-tags",
+      "type": "wrong-control",
+      "why": "Branches is a real settings page (branch protection), but tag protection is under Tags",
+      "find": "1. Go to the repository’s **Settings** > **Tags** page.",
+      "replace": "1. Go to the repository’s **Settings** > **Branches** page.",
+      "anchors": [
+        "**Branches**"
+      ]
+    },
+    {
+      "id": "tags-behavior",
+      "case": "forgejo-protected-tags",
+      "type": "behavior",
+      "why": "a claim about what the rule does, which the UI does not show while setting it up",
+      "find": "If you leave these fields empty, no one is allowed",
+      "replace": "If you leave these fields empty, everyone is allowed",
+      "anchors": [
+        "everyone is allowed"
+      ]
+    },
+    {
+      "id": "push-field",
+      "case": "forgejo-push-mirror",
+      "type": "field",
+      "why": "the push mirror form has no name field",
+      "find": "2. Enter a repository URL.\n\n3. (Optional)",
+      "replace": "2. Enter a repository URL and a **Mirror name**.\n\n3. (Optional)",
+      "anchors": [
+        "Mirror name"
+      ]
+    },
+    {
+      "id": "push-omit",
+      "case": "forgejo-push-mirror",
+      "type": "omission",
+      "why": "the step that opens Settings > Repository > Mirror settings is removed",
+      "find": "1. In your repository, go to **Settings** > **Repository**, and then the **Mirror Settings** section.\n\n2. Enter a repository URL.\n\n3. (Optional) Enter a branch filter (comma separated branch names), or leave blank to push all branches.\n\n4. If the repository needs authentication, expand the **Authorization** section and fill in your authentication information. Note that the requested **password** can also be your access token.\n\n5. Select **Add Push Mirror** to save the configuration.",
+      "replace": "1. Enter a repository URL.\n\n2. (Optional) Enter a branch filter (comma separated branch names), or leave blank to push all branches.\n\n3. If the repository needs authentication, expand the **Authorization** section and fill in your authentication information. Note that the requested **password** can also be your access token.\n\n4. Select **Add Push Mirror** to save the configuration.",
+      "anchors": [
+        "Enter a repository URL"
+      ]
+    },
+    {
+      "id": "pull-order",
+      "case": "forgejo-pull-mirror",
+      "type": "order",
+      "why": "steps 5 and 6 swapped: migrating first creates a repository that is not a mirror",
+      "find": "5. Check the box **This repository will be a mirror**.\n\n6. Select **Migrate repository** to save the configuration.",
+      "replace": "5. Select **Migrate repository** to save the configuration.\n\n6. Check the box **This repository will be a mirror**.",
+      "anchors": [
+        "Select **Migrate repository**",
+        "This repository will be a mirror"
+      ]
+    },
+    {
+      "id": "pull-label",
+      "case": "forgejo-pull-mirror",
+      "type": "label",
+      "why": "the menu item is New migration",
+      "find": "1. Select **New Migration** in the **Create…** menu",
+      "replace": "1. Select **Import repository** in the **Create…** menu",
+      "anchors": [
+        "Import repository"
+      ]
+    }
+  ]
+}

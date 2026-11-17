@@ -1,0 +1,164 @@
+{
+  "about": "Planted doc errors for bench/run.mjs --mutants (see fixtures/grafana/mutants.json). Labels checked against the Metabase v0.63.18.2 fixture. The docs are fetched as HTML and converted, so find strings match the converted text.",
+  "known": {
+    "metabase-move-collection": [
+      "Our Analytics"
+    ],
+    "metabase-model-from-question": [
+      "Turn this into a model"
+    ],
+    "metabase-default-filter-value": [
+      "make required",
+      "Edit the dashboard"
+    ],
+    "metabase-link-card": [
+      "paper clip"
+    ]
+  },
+  "mutants": [
+    {
+      "id": "dash-label",
+      "case": "metabase-create-dashboard",
+      "type": "label",
+      "why": "the button in the new-dashboard dialog is Create",
+      "find": "4. Click **Create**, and Metabase will take you to your shiny new dashboard.",
+      "replace": "4. Click **Save**, and Metabase will take you to your shiny new dashboard.",
+      "anchors": [
+        "**Save**"
+      ]
+    },
+    {
+      "id": "dash-location",
+      "case": "metabase-create-dashboard",
+      "type": "location",
+      "why": "+ New is in the top right of the top bar",
+      "find": "1. In the top right of the screen, click the **+ New** > **Dashboard**.",
+      "replace": "1. In the bottom left of the screen, click the **+ New** > **Dashboard**.",
+      "anchors": [
+        "bottom left"
+      ]
+    },
+    {
+      "id": "dash-field",
+      "case": "metabase-create-dashboard",
+      "type": "field",
+      "why": "the dialog has no Theme field",
+      "find": "2. Give your new dashboard a name and a description.",
+      "replace": "2. Give your new dashboard a name, a description and a **Theme**.",
+      "anchors": [
+        "**Theme**"
+      ]
+    },
+    {
+      "id": "move-label",
+      "case": "metabase-move-collection",
+      "type": "label",
+      "why": "the menu item is Move",
+      "find": "3. Select **Move**.",
+      "replace": "3. Select **Relocate**.",
+      "anchors": [
+        "Relocate"
+      ]
+    },
+    {
+      "id": "move-omit",
+      "case": "metabase-move-collection",
+      "type": "omission",
+      "why": "the step that opens the collection's page is removed",
+      "find": "1. Visit the collection’s page.\n\n2. Click on the three-dot menu in the page.\n\n3. Select **Move**.\n\n4. Select a new collection to move to. To make the collection a top-level collection, select the **Our Analytics** collection.",
+      "replace": "1. Click on the three-dot menu in the page.\n\n2. Select **Move**.\n\n3. Select a new collection to move to. To make the collection a top-level collection, select the **Our Analytics** collection.",
+      "anchors": [
+        "three-dot menu"
+      ]
+    },
+    {
+      "id": "trash-label",
+      "case": "metabase-trash-question",
+      "type": "stale-term",
+      "why": "older Metabase versions called this Archive; v0.63 says Move to trash",
+      "find": "3. Select “Move to trash”.",
+      "replace": "3. Select “Archive”.",
+      "anchors": [
+        "Archive"
+      ]
+    },
+    {
+      "id": "trash-omit",
+      "case": "metabase-trash-question",
+      "type": "omission",
+      "why": "the step that opens the three-dot menu is removed",
+      "find": "2. Click on the three dots menu;\n\n3. Select “Move to trash”.",
+      "replace": "2. Select “Move to trash”.",
+      "anchors": [
+        "Select “Move to trash”",
+        "Go to the question"
+      ]
+    },
+    {
+      "id": "model-control",
+      "case": "metabase-model-from-question",
+      "type": "wrong-control",
+      "why": "Bookmark is a real button next to the … menu, but it bookmarks the question",
+      "find": "3. Click on the **…** > **Turn this into a model**.",
+      "replace": "3. Click on the **Bookmark** icon > **Turn this into a model**.",
+      "anchors": [
+        "**Bookmark**"
+      ]
+    },
+    {
+      "id": "freeze-location",
+      "case": "metabase-freeze-columns",
+      "type": "location",
+      "why": "the gear is in the bottom left of the question page",
+      "find": "1. Click the **gear** icon in the bottom left to open visualization settings.",
+      "replace": "1. Click the **gear** icon in the top right to open visualization settings.",
+      "anchors": [
+        "top right"
+      ]
+    },
+    {
+      "id": "freeze-tab",
+      "case": "metabase-freeze-columns",
+      "type": "wrong-control",
+      "why": "the tabs are Columns, Display and Conditional Formatting; the freeze switches are on Display",
+      "find": "2. Switch to the **Display** tab.",
+      "replace": "2. Switch to the **Formatting** tab.",
+      "anchors": [
+        "**Formatting**"
+      ]
+    },
+    {
+      "id": "filter-icon",
+      "case": "metabase-default-filter-value",
+      "type": "wrong-control",
+      "why": "the dashboard header has a pencil (Edit dashboard) and no gear",
+      "find": "You might want to set a default filter value, like “Active,” so that when people load your dashboard, they only see data for “Active” records (not “Inactive,” “Canceled,” and so on).\n\n1. When viewing a dashboard, click the **pencil** icon to **Edit the dashboard**.",
+      "replace": "You might want to set a default filter value, like “Active,” so that when people load your dashboard, they only see data for “Active” records (not “Inactive,” “Canceled,” and so on).\n\n1. When viewing a dashboard, click the **gear** icon to **Edit the dashboard**.",
+      "anchors": [
+        "**gear**"
+      ]
+    },
+    {
+      "id": "filter-field",
+      "case": "metabase-default-filter-value",
+      "type": "field",
+      "why": "the sidebar field is Default value",
+      "find": "3. In the sidebar, scroll down and choose a value from the **Default value** input field.",
+      "replace": "3. In the sidebar, scroll down and choose a value from the **Initial value** input field.",
+      "anchors": [
+        "Initial value"
+      ]
+    },
+    {
+      "id": "link-field",
+      "case": "metabase-link-card",
+      "type": "field",
+      "why": "the link card has a search/URL input and no Browse button",
+      "find": "3. On the link card, click the input field to search your Metabase for an item to link to, or paste an external link.",
+      "replace": "3. On the link card, click **Browse** to search your Metabase for an item to link to, or paste an external link.",
+      "anchors": [
+        "**Browse**"
+      ]
+    }
+  ]
+}

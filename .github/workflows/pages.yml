@@ -1,0 +1,56 @@
+# Publishes the example demos to GitHub Pages: https://serendip-ai.github.io/docdemo/
+# Only the files listed in the "Stage" step are published, never all of examples/.
+name: Publish example demos
+
+on:
+  push:
+    branches: [main]
+    paths: ['examples/**', '.github/workflows/pages.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      # A demo's index.html (the reader copy) and its screenshots are made to be public. review.html also
+      # shows DocDemo's notes, so it is listed only for demos the README or the examples page links it for.
+      # demo.json, report.md, steps.json, source.md and .debug/ hold notes, the app's address and recorded
+      # locators: they are never published. A listed file that is missing fails the job.
+      - name: Stage the public files
+        env:
+          DEMOS: grafana-create-playlist grafana-create-folder grafana-create-team drupal-regional-settings
+          REVIEWS: grafana-create-team drupal-regional-settings
+        run: |
+          set -euo pipefail
+          mkdir _site
+          cp examples/index.html _site/
+          for d in $DEMOS; do
+            mkdir -p "_site/$d/assets"
+            cp "examples/$d/index.html" "_site/$d/"
+            cp "examples/$d/assets/"*.webp "_site/$d/assets/"
+          done
+          # A review copy shows its claims' evidence screenshots, from evidence/, when it has them.
+          for d in $REVIEWS; do
+            cp "examples/$d/review.html" "_site/$d/"
+            if [ -d "examples/$d/evidence" ]; then mkdir -p "_site/$d/evidence" && cp "examples/$d/evidence/"*.webp "_site/$d/evidence/"; fi
+          done
+          find _site -type f | sort
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
